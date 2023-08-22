@@ -1,0 +1,21 @@
+
+<h2>Table Seeding:</h2>
+
+<div>The following tables have seeding code defined
+   <br>
+   <div style="padding:20px;">
+    {{definedSeedEntities}} 
+   </div>
+  
+</div>
+
+<p>
+    List the tables with the number of rows that you want created for that table ex <br>
+    Tenant 10<br>
+    Client 20
+</p>
+<b>Seed Counts:</b><br>
+<textarea rows="5" cols="80" pInputTextarea [(ngModel)]="seedCountsText"></textarea>
+<br>
+
+<p-button (click)="seedClick()">Seed Database</p-button>

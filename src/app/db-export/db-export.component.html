@@ -1,0 +1,36 @@
+<div [formGroup]="exportFormGroup" style="display:flex; gap:20px">
+    <div>
+        <h2>Tables and Columns for Export</h2>
+        <div class="card flex flex-column align-items-center justify-content-center">
+            <p-tree 
+                [value]="(toolsService.tablesAndColumnsTree$ | async) || []"
+                selectionMode="checkbox" 
+                class="w-full md:w-30rem" 
+                [(selection)]="treeSelection"
+>
+            </p-tree>
+        </div>
+    </div>
+    <div>
+        <div>
+            <div>
+                <h2>Export Filters:</h2>
+            </div>
+            <div>
+                <dl>
+                    <dt>A list of export conditions in &lt;tablename&gt; &lt;column filter clause&gt; format</dt>
+                    <dt>&nbsp;</dt>
+                    <dt><b>note:</b> Restrictions on parent tables are automatically applied to child tables foreign
+                        keys</dt>
+                    <dt>ex</dt>
+                    <dd>Tenant tenantId='ls'</dd>
+                    <dd>Client id=99</dd>
+                </dl>
+
+            </div>
+            <textarea formControlName="filterConditionsText" cols="80" rows="5"></textarea>
+        </div>
+
+        <p-button (click)="exportClick()">Export</p-button>
+    </div>
+</div>
