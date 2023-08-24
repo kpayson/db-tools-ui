@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { TableModule } from 'primeng/table';
+import { TableModule, SortIcon } from 'primeng/table';
 import { TreeModule } from 'primeng/tree';
 
 

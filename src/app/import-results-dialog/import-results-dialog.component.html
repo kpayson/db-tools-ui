@@ -1,0 +1,40 @@
+<div>
+    <div *ngIf="importErrors.length === 0; else errorsTemplate">
+        <h2>Import complete.  No errors reported</h2>
+    </div>
+    <ng-template #errorsTemplate>
+        <h2>
+            The following errors occured during import
+        </h2>
+        <p-table 
+            styleClass="p-datatable-striped"
+            [value]="importErrors" 
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [rows]="5"
+            [rowsPerPageOptions]="[5, 25, 50]">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th pSortableColumn="tableName" width="10%">
+                        Table Name <p-sortIcon field="tableName" ></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="errorMessage" width="45%">
+                        Error Message <p-sortIcon field="errorMessage"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="importData">
+                        Insert Data <p-sortIcon field="importData" width="45%"></p-sortIcon>
+                    </th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td>{{rowData.tableName}}</td>
+                    <td>{{rowData.errorMessage}}</td>
+                    <td>{{rowData.importData}}</td>
+                    
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+
+</div>

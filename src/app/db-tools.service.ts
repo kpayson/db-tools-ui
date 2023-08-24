@@ -48,7 +48,7 @@ export class DbToolsService {
     })
 
     this._exportResults = new ReplaySubject<any>();
-    this._importResults = new ReplaySubject<any>();
+    this._importErrors = new ReplaySubject<any>();
   }
 
   private _tableList$: Subject<TableInfo[]>;
@@ -70,13 +70,13 @@ export class DbToolsService {
   }
 
   private _exportResults: Subject<any>;
-  get exportResults() {
+  get exportResults$() {
     return this._exportResults.asObservable();
   }
 
-  private _importResults: Subject<any>;
-  get importResults() {
-    return this._importResults.asObservable();
+  private _importErrors: Subject<any>;
+  get importErrors$() {
+    return this._importErrors.asObservable();
   }
 
   exportData(treeSelection: TreeNode[], filterText: string) {
@@ -122,8 +122,17 @@ export class DbToolsService {
   importData(jsonData: string) {
     const obj = JSON.parse(jsonData);
     this.dataService.importData(obj).subscribe((res: any) => {
-      console.log(res);
-      this._importResults.next(res);
+      //console.log(res);
+      const errors = res
+        .filter((x:any)=>Boolean(x?.exception?.sqlMessage))
+        .map((x:any)=>{
+          return {
+            tableName:  x.tableName,
+            importData: JSON.stringify(x.rowData,null,4),
+            errorMessage: x.exception.sqlMessage
+          };
+        });
+      this._importErrors.next(errors);
     }, (err) => {
       console.log(err);
     });

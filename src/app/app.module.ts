@@ -12,6 +12,7 @@ import { DbExportComponent } from './db-export/db-export.component';
 import { DbImportComponent } from './db-import/db-import.component';
 import { DbViewerComponent } from './db-viewer/db-viewer.component';
 import { DbSeederComponent } from './db-seeder/db-seeder.component';
+import { ImportResultsDialogComponent } from './import-results-dialog/import-results-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DbSeederComponent } from './db-seeder/db-seeder.component';
     DbExportComponent,
     DbImportComponent,
     DbViewerComponent,
-    DbSeederComponent
+    DbSeederComponent,
+    ImportResultsDialogComponent
   ],
   imports: [
     BrowserModule,
