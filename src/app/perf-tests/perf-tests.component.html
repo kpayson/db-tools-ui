@@ -1,0 +1,38 @@
+<p-progressSpinner *ngIf="perfTestsAreRunning" [style]="{width: '50px', height: '50px'}" 
+    styleClass="custom-spinner" 
+    strokeWidth="4" 
+    fill="#EEEEEE" animationDuration="2s"></p-progressSpinner>
+
+    <br>
+<label>Number of Virtual Users</label>
+<input type="text" pInputText [(ngModel)]="numVirtualUsers" /><br>
+<p-button (click)="runPerfTestClick()">Run Perf Test</p-button>
+
+<br>
+<div>
+    <h2>Past Perf Test Runs</h2>
+    <p-table 
+    styleClass="p-datatable-striped"
+    [columns]="perfTestResultColumns" 
+    [value]="(toolsService.perfTestResults$ | async) || []" 
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 25, 50]">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th id="runDateColumn"> Run Date </th>
+            <th id="vusColumn"> VUS </th>
+            <!-- <th id="noteColumn"> Note </th> -->
+            <th id="reportLinkColumn"> Report </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td> {{ rowData['runDate'] | date }} </td>
+            <td> {{ rowData['vus'] }} </td>
+            <td> <a (click)="openReportClick(rowData['id'])" style="text-decoration: underline; cursor:pointer;">View Report</a></td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>

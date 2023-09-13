@@ -15,6 +15,12 @@ export class AppComponent {
 
   items = [
     {
+      label: "Connection",
+      command: (event: any) => {
+        this.selectedTab = 'connection';
+      }
+    },
+    {
       label: "View",
       command: (event: any) => {
         this.selectedTab = 'view';
@@ -37,7 +43,14 @@ export class AppComponent {
       command: (event: any) => {
         this.selectedTab = 'seed';
       }
-    }
+    },
+    {
+      label: "Perf Tests",
+      command: (event: any) => {
+        this.selectedTab = 'perftest';
+      }
+    },
+
   ];
 
   exportClick() {

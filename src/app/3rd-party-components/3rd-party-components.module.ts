@@ -13,6 +13,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TableModule, SortIcon } from 'primeng/table';
+import {ToastModule} from 'primeng/toast';
 import { TreeModule } from 'primeng/tree';
 
 
@@ -35,6 +36,7 @@ import { TreeModule } from 'primeng/tree';
     ProgressSpinnerModule,
     TableModule,
     TabMenuModule,
+    ToastModule,
     TreeModule
   ],
   providers: [],

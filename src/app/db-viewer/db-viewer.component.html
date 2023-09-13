@@ -9,7 +9,8 @@
             optionDisabled="inactive" (onChange)="selectedTableOnChange($event)">
             <ng-template let-table pTemplate="item">
                 <div class="flex align-items-center gap-2">
-                    <div>{{ table.tableName }} ({{table.rowCount}})</div>
+                    <div *ngIf="table.tableName">{{ table.tableName }} ({{table.rowCount}})</div>
+
                 </div>
             </ng-template>
         </p-dropdown>

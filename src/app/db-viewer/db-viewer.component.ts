@@ -25,10 +25,11 @@ export class DbViewerComponent {
       .pipe(
         map(([tables,showAll])=>{
           const preparedTables = tables.map(t=>({...t,inactive:t.rowCount === 0}))
-          return showAll ? preparedTables : preparedTables.filter(t=>t.rowCount > 0)
+          const empty = {tableName:'', rowCount:0}
+          return showAll ? [empty,...preparedTables] : [empty,...preparedTables.filter(t=>t.rowCount > 0)]
         }));
 
-    this.dataAndColumns$ = selectedTable$.pipe(mergeMap(t=>this.toolsService.getTableData(t)));
+    this.dataAndColumns$ = selectedTable$.pipe(filter(Boolean),mergeMap(t=>this.toolsService.getTableData(t)));
   }
 
   formGroup = this.fb.group({

@@ -13,6 +13,12 @@ import { DbImportComponent } from './db-import/db-import.component';
 import { DbViewerComponent } from './db-viewer/db-viewer.component';
 import { DbSeederComponent } from './db-seeder/db-seeder.component';
 import { ImportResultsDialogComponent } from './import-results-dialog/import-results-dialog.component';
+import { PerfTestsComponent } from './perf-tests/perf-tests.component';
+import { PerfTestResultsDialogComponent } from './perf-test-results-dialog/perf-test-results-dialog.component';
+import { SafeUrlPipe } from './safe-url.pipe'
+import { SanitizedHtmlPipe } from './sanitized-html.pipe';
+import { DbConnectionsComponent } from './db-connections/db-connections.component';
+import { ServerScriptsComponent } from './server-scripts/server-scripts.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +29,13 @@ import { ImportResultsDialogComponent } from './import-results-dialog/import-res
     DbImportComponent,
     DbViewerComponent,
     DbSeederComponent,
-    ImportResultsDialogComponent
+    ImportResultsDialogComponent,
+    PerfTestsComponent,
+    PerfTestResultsDialogComponent,
+    SanitizedHtmlPipe,
+    SafeUrlPipe,
+    DbConnectionsComponent,
+    ServerScriptsComponent,
   ],
   imports: [
     BrowserModule,

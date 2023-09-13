@@ -3,12 +3,15 @@
     <h3>Select json data file for import</h3>
 
     <p-fileUpload 
+        #fileUpload 
         mode="basic" 
         chooseLabel="Choose" 
         accept=".json"
         [customUpload]="true"
-        [auto]="false"
+        [auto]="true"
         (uploadHandler)="uploadHandler($event)">
     </p-fileUpload>
 
 </div>
+
+<p-toast></p-toast>
