@@ -1,37 +1,15 @@
 
-<header>
-    <h1>Database Tools</h1>
-</header>
-
-
-
-<p-tabMenu [model]="items"></p-tabMenu>
-
-<div id="view-tab" *ngIf="selectedTab=='connection'">
-    <app-db-connections></app-db-connections>
-</div>
-
-<div id="view-tab" *ngIf="selectedTab=='view'">
-    <app-db-viewer></app-db-viewer>
-</div>
-
-<div id="export-tab" *ngIf="selectedTab=='export'">
-    <app-db-export></app-db-export>
-</div>
-
-<div id="import-tab" *ngIf="selectedTab=='import'" style="width:80em">
-    <app-db-import></app-db-import>
-</div>
-
-<div id="seeder-tab" *ngIf="selectedTab=='seed'" style="width:80em">
-    <app-db-seeder></app-db-seeder>
-</div>
-
-<div id="perftest-tab" *ngIf="selectedTab=='perftest'" style="width:80em">
-    <app-perf-tests></app-perf-tests>
-</div>
-
-
-
+<div *ngIf="getUserData() && getUserData().email" class="user">
+    <div class="userbox">
+      <p>Logged in as: <span class="usertext">{{ getUserData().name }}</span></p>
+      <p>email: <span class="usertext">{{ getUserData().email }}</span></p>
+    </div>
+    <p-button (click)="logout()">Logout</p-button>
+  </div>
+  <br>
+  <br>
+  <div *ngIf="!getUserData() || !getUserData().email" class="user">
+    <p-button (click)="login()">Login</p-button>
+  </div>
 
 <router-outlet></router-outlet>

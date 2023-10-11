@@ -18,11 +18,18 @@ import { PerfTestResultsDialogComponent } from './perf-test-results-dialog/perf-
 import { SafeUrlPipe } from './safe-url.pipe'
 import { SanitizedHtmlPipe } from './sanitized-html.pipe';
 import { DbConnectionsComponent } from './db-connections/db-connections.component';
-import { ServerScriptsComponent } from './server-scripts/server-scripts.component';
+
+import { ServerJobsComponent } from './server-jobs/server-jobs.component';
+import { JobResultsDialogComponent } from './job-results-dialog/job-results-dialog.component';
+import { AuthConfigModule } from './services/auth-config.module';
+import { HomeComponent } from './home/home.component';
+import { AuthService } from './services/auth.service';
+
 
 @NgModule({
   declarations: [
     AppComponent,
+    
     TablesAndColumnsSelectorComponent,
     TablesAndColumnsViewerComponent,
     DbExportComponent,
@@ -35,7 +42,9 @@ import { ServerScriptsComponent } from './server-scripts/server-scripts.componen
     SanitizedHtmlPipe,
     SafeUrlPipe,
     DbConnectionsComponent,
-    ServerScriptsComponent,
+    ServerJobsComponent,
+    JobResultsDialogComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,9 +52,26 @@ import { ServerScriptsComponent } from './server-scripts/server-scripts.componen
     ThirdPartyComponentsModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AuthConfigModule
   ],
-  providers: [FileReader],
+  providers: [FileReader, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+// @NgModule({
+//   declarations: [AppComponent, TestpageComponent],
+//   imports: [
+//     BrowserModule,
+//     HttpClientModule,
+//     AppRoutingModule,
+//     AuthConfigModule
+//   ],
+//   providers: [
+//     AuthService
+//   ],
+//   bootstrap: [AppComponent],
+// })
+// export class AppModule {}

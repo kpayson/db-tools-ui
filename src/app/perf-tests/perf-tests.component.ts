@@ -81,7 +81,7 @@ export class PerfTestsComponent implements OnInit {
   runPerfTestClick() {
     this.perfTestsAreRunning = true;
     this.dbConnectionsService.activeConnection.subscribe((conn)=>{
-      this.toolsService.sendPayload(conn.id, this.numVirtualUsers);
+      this.toolsService.runPerfTest(conn.id, this.numVirtualUsers);
     })
     
   }

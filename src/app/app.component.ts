@@ -1,96 +1,47 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { AuthDataService } from './services/auth-data.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  title = 'db tools application';
+  groups: any[] = [];
+  // user: any = null;
 
-  constructor(private reader: FileReader){}
+  constructor(
+    private router: Router,
+    public authService: AuthService,
+    public authDataService: AuthDataService
+  ) {}
 
-  title = 'db-tools-ui';
+  ngOnInit(): void {}
 
-  selectedTab = 'export';
-
-  items = [
-    {
-      label: "Connection",
-      command: (event: any) => {
-        this.selectedTab = 'connection';
-      }
-    },
-    {
-      label: "View",
-      command: (event: any) => {
-        this.selectedTab = 'view';
-      }
-    },
-    {
-      label: "Export",
-      command: (event: any) => {
-        this.selectedTab = 'export';
-      }
-    },
-    {
-      label: "Import",
-      command: (event: any) => {
-        this.selectedTab = 'import';
-      }
-    },
-    {
-      label: "Seed",
-      command: (event: any) => {
-        this.selectedTab = 'seed';
-      }
-    },
-    {
-      label: "Perf Tests",
-      command: (event: any) => {
-        this.selectedTab = 'perftest';
-      }
-    },
-
-  ];
-
-  exportClick() {
-
+  openNewTab(path: string) {
+    const url = this.router.serializeUrl(this.router.createUrlTree([path]));
+    window.open(url, '_blank');
   }
 
-  importClick() {
-
+  login() {
+    this.authService.login();
   }
 
-  onUpload(evnt:any) {
-    console.log(evnt)
-    const fileToUpload = evnt.files[0]
-    this.reader.onload = this.handleFileLoad.bind(this);
-    this.reader.readAsText(fileToUpload);
+  logout() {
+    this.authService.logout();
   }
 
-  // handleFileInput(files: FileList) {
-  //   const fileToUpload = files.item(0);
-  //   this.reader.onload = this.handleFileLoad.bind(this);
-  //   this.reader.readAsText(fileToUpload);
-  // }
-
-  handleFileLoad(event:any) {
-    const fileText = event.target.result;
-    console.log(fileText);
-
-    // try {
-    //   const parsed = JSON.parse(fileText);
-    //   if (!parsed.id || !parsed.name || !parsed.identifier) {
-    //     throw new Error('missing required fields');
-    //   }
-    //   this.importedApi = parsed;
-    //   this.importErrors = [];
-    // } catch (e) {
-    //   this.importErrors = [
-    //     'An error occurred while processing the import file'
-    //   ];
-    //   this.importedApi = null;
-    // }
+  getUserData() {
+    return this.authService.userData;
   }
 
+  getGroups() {
+    this.authDataService.getGroups().then((groups) => {
+      this.groups = groups;
+      console.log('AppComponent - groups: ', groups);
+    })
+  }
 }

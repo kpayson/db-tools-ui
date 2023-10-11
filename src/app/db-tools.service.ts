@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { TreeNode } from 'primeng/api';
 import { first, Subject, BehaviorSubject, ReplaySubject, map, filter, mergeMap, combineLatest } from 'rxjs';
-import { TableInfo, TableWithColumnsInfo, PerfTestResult } from './models';
+import { TableInfo, TableWithColumnsInfo, PerfTestResult, CommandTemplate, CommandTemplateParameter, CommandRunResult } from './models';
 import { FileDownloadService } from './file-download.service';
 import { groupBy } from 'lodash';
 import { DbConnectionsService } from './db-connections.service';
 import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,8 @@ export class DbToolsService {
       .pipe(first(), mergeMap((connId)=>this.dataService.perfTestResults(connId)))
       .subscribe(results=>this._perfTestResults$.next(results))
 
+      this.dataService.commandRunResults().pipe(first()).subscribe(results=>this._commandRunResults$.next(results));
+
       console.log('WebSocket message received:', event.data);
     };
 
@@ -49,8 +52,6 @@ export class DbToolsService {
     };
   }
 
-
-
   constructor(
     private dataService: DataService,
     private fileDownloadService: FileDownloadService,
@@ -61,8 +62,12 @@ export class DbToolsService {
     this._tableList$ = new BehaviorSubject<TableInfo[]>([]);
     this._dataChangeNotice$ = new BehaviorSubject<string>('');
     this._perfTestResults$ = new BehaviorSubject<PerfTestResult[]>([]);
+    this._commandRunResults$ = new BehaviorSubject<CommandRunResult[]>([]);
     this._exportResults = new ReplaySubject<any>();
     this._importErrors = new Subject<any[]>();
+    this._commandTemplates$ = new BehaviorSubject<CommandTemplate[]>([]);
+    this._selectedCommandTemplateParameters$ = new BehaviorSubject<CommandTemplateParameter[]>([]);
+  
 
     this.wsConnect();
 
@@ -101,10 +106,19 @@ export class DbToolsService {
         this._tableList$.next(tables)
       })
 
-    // get the perf test results;
+    // get the perf test results
     this.activeConnId$
       .pipe(mergeMap((connId)=>this.dataService.perfTestResults(connId)))
       .subscribe(results=>this._perfTestResults$.next(results))
+
+    // get the command templates
+    this.dataService.commandTemplates()
+      .subscribe(results=>this._commandTemplates$.next(results))
+
+    // get the command run results
+    this.dataService.commandRunResults()
+      .subscribe(results=>this._commandRunResults$.next(results));
+
   }
 
   private _tableList$: Subject<TableInfo[]>;
@@ -143,6 +157,21 @@ export class DbToolsService {
   private _perfTestResults$: Subject<PerfTestResult[]>;
   get perfTestResults$() {
     return this._perfTestResults$.asObservable();
+  }
+
+  private _commandTemplates$: Subject<CommandTemplate[]>;
+  get commandTemplates$() {
+    return this._commandTemplates$.asObservable()
+  }
+
+  private _selectedCommandTemplateParameters$: Subject<CommandTemplateParameter[]>;
+  get selectedCommandTemplateParameters$() {
+    return this._selectedCommandTemplateParameters$.asObservable()
+  }
+
+  private _commandRunResults$: Subject<CommandRunResult[]>;
+  get commandRunResults$() {
+    return this._commandRunResults$.asObservable();
   }
 
 
@@ -249,7 +278,7 @@ export class DbToolsService {
     return this.dataService.perfTestReport(reportId);
   }
 
-  sendPayload(connectionId:number, targetVUS:number) {
+  runPerfTest(connectionId:number, targetVUS:number) {
 
     const perfTestParams = {
       targetVUS,
@@ -266,6 +295,29 @@ export class DbToolsService {
       console.error('WebSocket connection is not open');
     }
   }
+
+  runServerJob(templateId:number, params:any) {
+    if (this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify({
+        event: 'serverJob',
+        data: {templateId, params},
+      }))
+    } else {
+      console.error('WebSocket connection is not open');
+    }
+  }
+
+  commandResultReport(commandRunResultId:number){
+    return this.dataService.commandResultReport(commandRunResultId);
+  }
+
+  // selectCommandTemplate(templateId:number){
+  //   this.dataService.commandTemplateParameters(templateId).subscribe(params=>{
+  //     this._selectedCommandTemplateParameters$.next(params);
+  //   })
+  // }
+
+  
 
 
 

@@ -1,7 +1,0 @@
-<form [formGroup]="form">
-    <div *ngFor="let field of fields">
-      <label>{{ field | titlecase }}</label>
-      <input type="text" [formControlName]="field">
-    </div>
-    <button type="submit">Submit</button>
-  </form>

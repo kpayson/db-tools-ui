@@ -1,0 +1,22 @@
+
+{
+    "auth": {
+      "authority": "http://localhost:7007/_api/auth/ls/.well-known/openid-configuration",
+      "clientId": "dbTools-client",
+      "scope": "openid profile offline_access email groups",
+      "responseType": "code",
+      "renewTimeBeforeTokenExpiresInSeconds": 30,
+      "logLevel": "DEBUG",
+      "forbiddenRoute": "/access-denied",
+      "unauthorizedRoute": "/access-denied",
+      "apiBaseUrl": "http://localhost:7007/_api",
+      "tenant": "labshare",
+      "secureRoutes": []
+    },
+    "other": {
+      "description": "Additonal config values can go here",
+      "foo": "bar baz",
+      "getGroupsUrl": "http://localhost:7007/_api/auth/admin/tenants/{tenantId}/users/{userId}/groups"
+    }
+  }
+

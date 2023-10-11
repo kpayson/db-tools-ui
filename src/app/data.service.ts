@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { TableInfo, TableWithColumnsInfo, ColumnInfo, PerfTestResult } from './models';
+import { TableInfo, TableWithColumnsInfo, PerfTestResult, 
+  CommandTemplate, CommandTemplateParameter, CommandRunResult } from './models';
 import { ExportEntity } from './models/exportEntity';
-import { catchError, of } from 'rxjs';
 import { DBConnection } from './models/dbConnection';
-import { DbConnectionsService } from './db-connections.service';
+import { AuthService } from './services/auth.service';
+import { map, mergeMap } from 'rxjs/operators';
+
 
 
 @Injectable({
@@ -13,16 +15,29 @@ import { DbConnectionsService } from './db-connections.service';
 })
 export class DataService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService:AuthService) {}
+
+  private get headers$() {
+    return this.authService.getAccessToken().pipe(map(token=>{
+      const header = new HttpHeaders().set('Accept', 'application/json')
+        .set('Authorization', 'Bearer ' + token);
+      return header;
+    }))
+  }
 
   private get<T>(url: string, connectionId?:number) {
-    if(connectionId) {url += `?connectionId=${connectionId}`;}
-    return this.http.get<T>(`${environment.apiRootUrl}/${url}`); //.pipe(catchError((err:any)=>of(err)));
+    return this.headers$.pipe(mergeMap(headers=>{
+      if(connectionId) {url += `?connectionId=${connectionId}`;}
+      return this.http.get<T>(`${environment.apiRootUrl}/${url}`, {headers:headers});
+    }));
+
   }
 
   private post<T>(url: string, body: any, connectionId:number) {
-    if(connectionId) {url += `?connectionId=${connectionId}`;}
-    return this.http.post<T>(`${environment.apiRootUrl}/${url}`, body);
+    return this.headers$.pipe(mergeMap(headers=>{
+      if(connectionId) {url += `?connectionId=${connectionId}`;}
+      return this.http.post<T>(`${environment.apiRootUrl}/${url}`, body, {headers:headers}); 
+    }));
   }
 
   public tables(connectionId:number) {
@@ -69,5 +84,31 @@ export class DataService {
     const res$ = this.get<string>(`perf-test-results/htmlReport/${reportId}`);
     return res$;
   }
+
+  public commandTemplates() {
+    const res$ = this.get<CommandTemplate[]>(`command-templates`);
+    return res$
+  }
+
+  public commandTemplateWithParameters(templateId:number) {
+    const res$ = this.get<CommandTemplate[]>(`command-templates/${templateId}`);
+    return res$
+  }
+
+  public commandTemplateParameters(templateId:number) {
+    const res$ = this.get<CommandTemplateParameter[]>(`command-templates/${templateId}/parameters`);
+    return res$
+  }
+
+  public commandRunResults() {
+    const res$ = this.get<CommandRunResult[]>(`command-run-results`);
+    return res$;
+  }
+
+  public commandResultReport(commandResultId:number) {
+    const res$ = this.get<string>(`command-run-results/${commandResultId}/htmlReport`);
+    return res$;
+  }
+
 
 }

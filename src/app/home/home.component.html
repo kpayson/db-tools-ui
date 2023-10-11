@@ -1,0 +1,39 @@
+
+<header>
+    <h1>Database Tools</h1>
+</header>
+
+
+<p-tabMenu [model]="items"></p-tabMenu>
+
+<div id="view-tab" *ngIf="selectedTab=='connection'">
+    <app-db-connections></app-db-connections>
+</div>
+
+<div id="view-tab" *ngIf="selectedTab=='view'">
+    <app-db-viewer></app-db-viewer>
+</div>
+
+<div id="export-tab" *ngIf="selectedTab=='export'">
+    <app-db-export></app-db-export>
+</div>
+
+<div id="import-tab" *ngIf="selectedTab=='import'" style="width:80em">
+    <app-db-import></app-db-import>
+</div>
+
+<div id="seeder-tab" *ngIf="selectedTab=='seed'" style="width:80em">
+    <app-db-seeder></app-db-seeder>
+</div>
+
+<div id="perftest-tab" *ngIf="selectedTab=='perftest'" style="width:80em">
+    <app-perf-tests></app-perf-tests>
+</div>
+
+<div id="serverjob-tab" *ngIf="selectedTab=='serverjob'" style="width:80em">
+    <app-server-jobs></app-server-jobs>
+</div>
+
+
+
+
