@@ -24,12 +24,14 @@ import { JobResultsDialogComponent } from './job-results-dialog/job-results-dial
 import { AuthConfigModule } from './services/auth-config.module';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
+import { HeaderComponent } from './header/header.component';
+import { DbConnectionUpsertDialogComponent } from './db-connection-upsert-dialog/db-connection-upsert-dialog.component';
+import { ServerJobUpsertDialogComponent } from './server-job-upsert-dialog/server-job-upsert-dialog.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    
     TablesAndColumnsSelectorComponent,
     TablesAndColumnsViewerComponent,
     DbExportComponent,
@@ -45,6 +47,9 @@ import { AuthService } from './services/auth.service';
     ServerJobsComponent,
     JobResultsDialogComponent,
     HomeComponent,
+    HeaderComponent,
+    DbConnectionUpsertDialogComponent,
+    ServerJobUpsertDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -19,6 +19,7 @@ export class JobResultsDialogComponent {
   ngOnInit(): void {
     if(this.config.data) {
       this.safeHtml = this.config.data;
+      
     }
   }
 

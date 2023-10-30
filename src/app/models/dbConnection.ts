@@ -1,5 +1,5 @@
 export interface DBConnection {
-    id: number;
+    id?: number;
     name: string;
     dialect: string;
     host: string;
@@ -7,4 +7,5 @@ export interface DBConnection {
     database: string;
     username: string;
     password: string;
+    authServer: string
 }

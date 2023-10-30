@@ -8,6 +8,8 @@ import { BehaviorSubject, map } from 'rxjs';
 import {keyBy, mapValues} from 'lodash';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { JobResultsDialogComponent } from '../job-results-dialog/job-results-dialog.component';
+import { ServerJobUpsertDialogComponent } from '../server-job-upsert-dialog/server-job-upsert-dialog.component';
+
 
 
 @Component({
@@ -126,6 +128,30 @@ export class ServerJobsComponent implements OnInit {
       // console.log(reportHtml);
       this.openReportDialog(reportHtml);
     })
+  }
+
+  addNewTemplateClick() {
+    this.ref = this.dialogService.open(ServerJobUpsertDialogComponent, { 
+      data: {mode:'new'},
+      header: 'Add New Server Job',
+      width: '95%',
+      height: '95%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true
+    });
+  }
+
+  editSelectedTemplateClick() {
+    this.ref = this.dialogService.open(ServerJobUpsertDialogComponent, { 
+      data: {mode:'edit', template:this.form.get('selectedTemplate')?.value},
+      header: 'Add New Server Job',
+      width: '95%',
+      height: '95%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true
+    });
   }
 
 }

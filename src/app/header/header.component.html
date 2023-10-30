@@ -1,0 +1,20 @@
+<header>
+    <div class="header-left">
+      <h1>Database Tools</h1>
+    </div>
+    <div class="header-right">
+      <div *ngIf="getUserData() && getUserData().email" class="user">
+        <div class="userbox">
+          <p>Logged in as: <span class="usertext">{{ getUserData().name }}</span></p>
+          <p>email: <span class="usertext">{{ getUserData().email }}</span></p>
+        </div>
+        <p-button (click)="logout()">Logout</p-button>
+      </div>
+      <div *ngIf="!getUserData() || !getUserData().email" class="user">
+        <p-button (click)="login()">Login</p-button>
+      </div>
+    </div>
+  </header>
+
+
+

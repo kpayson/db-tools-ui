@@ -33,10 +33,24 @@ export class DataService {
 
   }
 
-  private post<T>(url: string, body: any, connectionId:number) {
+  private post<T>(url: string, body: any, connectionId?:number) {
     return this.headers$.pipe(mergeMap(headers=>{
       if(connectionId) {url += `?connectionId=${connectionId}`;}
       return this.http.post<T>(`${environment.apiRootUrl}/${url}`, body, {headers:headers}); 
+    }));
+  }
+
+  private put<T>(url: string, body: any, connectionId?:number) {
+    return this.headers$.pipe(mergeMap(headers=>{
+      if(connectionId) {url += `?connectionId=${connectionId}`;}
+      return this.http.put<T>(`${environment.apiRootUrl}/${url}`, body, {headers:headers}); 
+    }));
+  }
+
+  private delete<T>(url: string, connectionId?:number) {
+    return this.headers$.pipe(mergeMap(headers=>{
+      if(connectionId) {url += `?connectionId=${connectionId}`;}
+      return this.http.delete<T>(`${environment.apiRootUrl}/${url}`, {headers:headers}); 
     }));
   }
 
@@ -72,6 +86,21 @@ export class DataService {
 
   public connections() {
     const res$ = this.get<DBConnection[]>(`database-connection`);
+    return res$;
+  }
+
+  public connectionAdd(connection:DBConnection) {
+    const res$ = this.post<DBConnection>(`database-connection`,connection);
+    return res$;
+  }
+
+  public connectionUpdate(connection:DBConnection) {
+    const res$ = this.put<DBConnection>(`database-connection/${connection.id}`,connection);
+    return res$;
+  }
+
+  public connectionDelete(connectionId:number) {
+    const res$ = this.delete<DBConnection>(`database-connection/${connectionId}`);
     return res$;
   }
 

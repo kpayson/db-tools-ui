@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { TreeNode } from 'primeng/api';
-import { BehaviorSubject, ReplaySubject, map, filter } from 'rxjs';
-import { TableInfo, TableWithColumnsInfo } from './models/tablesWithColumns';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, filter } from 'rxjs';
 import { DBConnection } from './models/dbConnection';
 
 
@@ -28,6 +25,27 @@ export class DbConnectionsService {
 
   public get activeConnection() {
     return this._selectedConnection.pipe(filter(Boolean));
+  }
+
+  public addConnection(connection:DBConnection) {
+    this.dataService.connectionAdd(connection).subscribe(connection => {
+      this._databaseConnections$.next([...this._databaseConnections$.value, connection]);
+      this._selectedConnection.next(connection);
+    })
+  }
+
+  public updateConnection(connection:DBConnection) {
+    this.dataService.connectionUpdate(connection).subscribe(res => {
+      this._databaseConnections$.next([...this._databaseConnections$.value.filter(c=>c.id !== connection.id), connection]);
+      this._selectedConnection.next(connection);
+    })
+  }
+
+  public deleteConnection(connectionId:number) {
+    this.dataService.connectionDelete(connectionId).subscribe(res => {
+      this._databaseConnections$.next([...this._databaseConnections$.value.filter(c=>c.id !== connectionId)]);
+      this._selectedConnection.next(this._databaseConnections$.value.length > 0 ? this._databaseConnections$.value[0]: null);
+    })
   }
 
   public setActiveConnection(connection:DBConnection) {

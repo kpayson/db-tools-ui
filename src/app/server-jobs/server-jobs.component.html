@@ -13,6 +13,10 @@
               </div>
           </ng-template>
       </p-dropdown>
+      <!-- <p-button (click)="editSelectedTemplateClick()" label="Edit Template" styleClass="p-button-text"></p-button>
+      <p-button (click)="addNewTemplateClick()" label="Add Template" styleClass="p-button-text"></p-button> -->
+
+      
     </div>
     <br><br>
 
@@ -24,8 +28,11 @@
     </div>
 
     <br>
-
-    <p-button (click)="runClick()">Run</p-button>
+    <div class="action-buttons">
+        <p-button (click)="runClick()">Run</p-button>
+        <!-- <p-button (click)="addNewTemplateClick()" label="Add New Template"></p-button>
+        <p-button (click)="editSelectedTemplateClick()" label="Edit Selected Template"></p-button> -->
+    </div>
 
 <br><br>
     <label>Past Jobs</label>

@@ -1,0 +1,35 @@
+.wrapper {
+    background-color: whitesmoke;
+    list-style-type: none;
+    padding: 0;
+    border-radius: 3px;
+}
+
+.form-group {
+    display: flex;
+    // justify-content: space-between;
+    padding: .5em;
+}
+
+.form-group>label {
+    // padding: .5em 1em .5em 0;
+    // flex: 1;
+    width: 200px;
+}
+
+// .form-group>input,
+// .form-group>p-dropdown {
+//     flex: 2;
+// }
+
+// .form-group>input,
+// .form-group>p-dropdown,
+// .form-group>button {
+//     padding: .5em;
+// }
+
+// .form-group>button {
+//     background: gray;
+//     color: white;
+//     border: 0;
+// }

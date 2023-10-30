@@ -35,7 +35,7 @@ export class DbToolsService {
       this._webSocketMessages$.next(event.data);
 
       this.activeConnId$
-      .pipe(first(), mergeMap((connId)=>this.dataService.perfTestResults(connId)))
+      .pipe(first(), mergeMap((connId)=>this.dataService.perfTestResults(connId!)))
       .subscribe(results=>this._perfTestResults$.next(results))
 
       this.dataService.commandRunResults().pipe(first()).subscribe(results=>this._commandRunResults$.next(results));
@@ -72,7 +72,7 @@ export class DbToolsService {
     this.wsConnect();
 
     // get the tables and columns used by the export page
-    this.activeConnId$.pipe(mergeMap((connId)=>dataService.tablesWithColumns(connId).pipe(map((tArray: TableWithColumnsInfo[]) => {
+    this.activeConnId$.pipe(mergeMap((connId)=>dataService.tablesWithColumns(connId!).pipe(map((tArray: TableWithColumnsInfo[]) => {
       return tArray.map(t => {
         return {
           key: t.tableName,
@@ -101,14 +101,14 @@ export class DbToolsService {
 
     // update the tables to pull in the correct counts if there active connection changes or if there is a data-change notice after import or seeding
     combineLatest([this.activeConnId$,this._dataChangeNotice$])
-    .pipe(mergeMap(([connId,_])=>this.dataService.tables(connId)))
+    .pipe(mergeMap(([connId,_])=>this.dataService.tables(connId!)))
     .subscribe(tables => {
         this._tableList$.next(tables)
       })
 
     // get the perf test results
     this.activeConnId$
-      .pipe(mergeMap((connId)=>this.dataService.perfTestResults(connId)))
+      .pipe(mergeMap((connId)=>this.dataService.perfTestResults(connId!)))
       .subscribe(results=>this._perfTestResults$.next(results))
 
     // get the command templates
@@ -205,7 +205,7 @@ export class DbToolsService {
       }
     })
     this.activeConnId$.pipe(mergeMap(connId=>
-      this.dataService.exportData(exportEntities, connId))).subscribe({
+      this.dataService.exportData(exportEntities, connId!))).subscribe({
         next: (res: any) => {
           const json = JSON.stringify(res, null, 4);
           this.fileDownloadService.jsonFileDownload(json, 'export_download.json')
@@ -228,7 +228,7 @@ export class DbToolsService {
     }
     
     this.activeConnId$.pipe(mergeMap(connId=>
-      this.dataService.importData(obj, connId))).subscribe({
+      this.dataService.importData(obj, connId!))).subscribe({
         next: (res: any) => {
           //console.log(res);
           const errors = res
@@ -251,7 +251,7 @@ export class DbToolsService {
 
   getTableData(tableName: string) {
     return this.activeConnId$.pipe(mergeMap(connId=>
-      this.dataService.tableData(tableName, connId).pipe(map(tableData => {
+      this.dataService.tableData(tableName, connId!).pipe(map(tableData => {
         const cols = tableData.some(Boolean) ? Object.keys(tableData[0]) : [];
         for (const row of tableData) {
           for (const field in row) {
@@ -269,7 +269,7 @@ export class DbToolsService {
 
   seedDB(counts: { [tableName: string]: number }) {
     this.activeConnId$.pipe(mergeMap(connId=>
-      this.dataService.seedDB(counts,connId))).subscribe(()=>{
+      this.dataService.seedDB(counts,connId!))).subscribe(()=>{
         this._dataChangeNotice$.next('seed complete')
       })
   }

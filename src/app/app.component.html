@@ -1,15 +1,2 @@
 
-<div *ngIf="getUserData() && getUserData().email" class="user">
-    <div class="userbox">
-      <p>Logged in as: <span class="usertext">{{ getUserData().name }}</span></p>
-      <p>email: <span class="usertext">{{ getUserData().email }}</span></p>
-    </div>
-    <p-button (click)="logout()">Logout</p-button>
-  </div>
-  <br>
-  <br>
-  <div *ngIf="!getUserData() || !getUserData().email" class="user">
-    <p-button (click)="login()">Login</p-button>
-  </div>
-
 <router-outlet></router-outlet>

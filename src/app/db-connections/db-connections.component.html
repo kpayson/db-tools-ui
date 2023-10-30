@@ -1,15 +1,25 @@
+<div class="wrapper">
+    <div [formGroup]="formGroup" style="display:flex gap-2">
 
-<div [formGroup]="formGroup" style="display:flex gap-2">
-
-<label>Active Connection</label>
-<p-dropdown formControlName="selectedConnection" (onChange)="connectionChange($event)"
-    [options]="(connectionsService.databaseConnections | async) || []" 
-    optionLabel="name">
-    <ng-template let-connection pTemplate="item">
-        <div class="flex align-items-center gap-2">
-            <div>{{ connection.name }} ({{connection.host}} port:{{connection.port}})</div>
+        <label>Active Connection</label>
+        <p-dropdown formControlName="selectedConnection" (onChange)="connectionChange($event)"
+            [options]="(connectionsService.databaseConnections | async) || []" 
+            optionLabel="name">
+            <ng-template let-connection pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ connection.name }} ({{connection.host}} port:{{connection.port}})</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+        
+        
+        <p-button (click)="editConnection()" label="Edit" styleClass="p-button-text"></p-button>
+        <p-button (click)="deleteConnection()" label="Delete" styleClass="p-button-text"></p-button>
+        <br><br>
+        
+        <p-button label="Add Connection" (onClick)="addConnection()"></p-button>
         </div>
-    </ng-template>
-</p-dropdown>
-
 </div>
+
+
+
