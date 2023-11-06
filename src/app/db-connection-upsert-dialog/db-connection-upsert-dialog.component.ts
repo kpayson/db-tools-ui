@@ -35,7 +35,7 @@ export class DbConnectionUpsertDialogComponent {
       port:['', Validators.required],
       database:['', Validators.required],
       username:['', Validators.required],
-      password:['', Validators.required],
+      password:[''],
       authServer:['', Validators.required],
     });
 
