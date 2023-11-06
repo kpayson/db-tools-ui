@@ -9,14 +9,14 @@ import {keyBy, mapValues} from 'lodash';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { JobResultsDialogComponent } from '../job-results-dialog/job-results-dialog.component';
 import { ServerJobUpsertDialogComponent } from '../server-job-upsert-dialog/server-job-upsert-dialog.component';
-
-
+import { CommandTemplatesService } from '../command-templates.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-server-jobs',
   templateUrl: './server-jobs.component.html',
   styleUrls: ['./server-jobs.component.scss'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService, MessageService]
 })
 export class ServerJobsComponent implements OnInit {
   @Input() fields: string[]= [];
@@ -26,7 +26,11 @@ export class ServerJobsComponent implements OnInit {
   constructor(
     private fb: FormBuilder, 
     public toolsService:DbToolsService, 
-    public dialogService: DialogService) {}
+    public dialogService: DialogService,
+    public commandTemplatesService: CommandTemplatesService,
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService
+    ) {}
 
   // private parseTemplateParameters(template: string): string[] 
   // {
@@ -40,9 +44,11 @@ export class ServerJobsComponent implements OnInit {
 
   selectedTemplateParams$ = new BehaviorSubject<CommandTemplateParameter[]>([]);
 
-  commandTemplates$ = this.toolsService.commandTemplates$.pipe(map(templates=>{
-    return [{name:''}, ...templates]
-  }))
+  commandTemplates$ = this.commandTemplatesService.commandTemplates$;
+  
+  // .pipe(map(templates=>{
+  //   return [{name:''}, ...templates]
+  // }))
 
   jobIsRunning = false;
 
@@ -153,5 +159,31 @@ export class ServerJobsComponent implements OnInit {
       maximizable: true
     });
   }
+
+  deleteTemplateClick() {
+    this.commandTemplatesService.deleteCommandTemplate(this.selectedTemplateId);
+  }
+
+  confirmDelete(event: Event) {
+    // this.confirmationService.confirm({
+    //     target: event.target as EventTarget,
+    //     message: 'Are you sure that you want to delete this template?',
+    //     icon: 'pi pi-exclamation-triangle',
+    //     accept: () => {
+    //         this.commandTemplatesService.deleteCommandTemplate(this.selectedTemplateId);
+    //         this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
+    //     },
+    //     reject: () => {
+    //         this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+    //     }
+    // });
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to delete this template?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => this.commandTemplatesService.deleteCommandTemplate(this.selectedTemplateId),
+      reject: () => {}
+  });
+}
 
 }

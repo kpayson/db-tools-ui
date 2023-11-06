@@ -119,6 +119,21 @@ export class DataService {
     return res$
   }
 
+  public commandTemplateAdd(commandTemplate:CommandTemplate) {
+    const res$ = this.post<CommandTemplate>(`command-templates`,commandTemplate);
+    return res$;
+  }
+
+  public commandTemplateDelete(commandTemplateId:number) {
+    const res$ = this.delete<DBConnection>(`command-templates/${commandTemplateId}`);
+    return res$;
+  }
+
+  public commandTemplateUpdate(commandTemplate:CommandTemplate) {
+    const res$ = this.put<DBConnection>(`command-templates/${commandTemplate.id}`,commandTemplate);
+    return res$;
+  }
+
   public commandTemplateWithParameters(templateId:number) {
     const res$ = this.get<CommandTemplate[]>(`command-templates/${templateId}`);
     return res$

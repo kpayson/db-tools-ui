@@ -17,6 +17,11 @@
     width: 200px;
 }
 
+.parameterGroup {
+    display:flex; gap: 20px;
+    cursor: pointer;
+}
+
 // .form-group>input,
 // .form-group>p-dropdown {
 //     flex: 2;

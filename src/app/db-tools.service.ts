@@ -65,7 +65,7 @@ export class DbToolsService {
     this._commandRunResults$ = new BehaviorSubject<CommandRunResult[]>([]);
     this._exportResults = new ReplaySubject<any>();
     this._importErrors = new Subject<any[]>();
-    this._commandTemplates$ = new BehaviorSubject<CommandTemplate[]>([]);
+    //this._commandTemplates$ = new BehaviorSubject<CommandTemplate[]>([]);
     this._selectedCommandTemplateParameters$ = new BehaviorSubject<CommandTemplateParameter[]>([]);
   
 
@@ -73,7 +73,7 @@ export class DbToolsService {
 
     // get the tables and columns used by the export page
     this.activeConnId$.pipe(mergeMap((connId)=>dataService.tablesWithColumns(connId!).pipe(map((tArray: TableWithColumnsInfo[]) => {
-      return tArray.map(t => {
+      return (tArray || []).map(t => {
         return {
           key: t.tableName,
           label: t.tableName,
@@ -110,10 +110,6 @@ export class DbToolsService {
     this.activeConnId$
       .pipe(mergeMap((connId)=>this.dataService.perfTestResults(connId!)))
       .subscribe(results=>this._perfTestResults$.next(results))
-
-    // get the command templates
-    this.dataService.commandTemplates()
-      .subscribe(results=>this._commandTemplates$.next(results))
 
     // get the command run results
     this.dataService.commandRunResults()
@@ -159,10 +155,10 @@ export class DbToolsService {
     return this._perfTestResults$.asObservable();
   }
 
-  private _commandTemplates$: Subject<CommandTemplate[]>;
-  get commandTemplates$() {
-    return this._commandTemplates$.asObservable()
-  }
+  // private _commandTemplates$: Subject<CommandTemplate[]>;
+  // get commandTemplates$() {
+  //   return this._commandTemplates$.asObservable()
+  // }
 
   private _selectedCommandTemplateParameters$: Subject<CommandTemplateParameter[]>;
   get selectedCommandTemplateParameters$() {
