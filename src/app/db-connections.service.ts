@@ -36,7 +36,9 @@ export class DbConnectionsService {
 
   public updateConnection(connection:DBConnection) {
     this.dataService.connectionUpdate(connection).subscribe(res => {
-      this._databaseConnections$.next([...this._databaseConnections$.value.filter(c=>c.id !== connection.id), connection]);
+      this._databaseConnections$.next(
+        this._databaseConnections$.value.map(c => c.id === connection.id ? connection : c)
+      );
       this._selectedConnection.next(connection);
     })
   }

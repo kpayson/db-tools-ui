@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY . .
 RUN npm install
-RUN npm run build
+RUN npm run build --configuration=production
 # Serve Application using Nginx Server
 FROM nginx:alpine
 COPY --from=build /app/dist/db-tools-ui/ /usr/share/nginx/html
