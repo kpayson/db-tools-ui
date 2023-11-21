@@ -7,6 +7,7 @@ import { ExportEntity } from './models/exportEntity';
 import { DBConnection } from './models/dbConnection';
 import { AuthService } from './services/auth.service';
 import { map, mergeMap } from 'rxjs/operators';
+import { ConfigService } from './services/config.service';
 
 
 

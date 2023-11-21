@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, firstValueFrom, map } from 'rxjs';
 
-const CONF_FILE_PATH = 'assets/config.json';
+const CONF_FILE_PATH = 'config/config.json';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,9 @@ export class ConfigService {
           apiBaseUrl: conf.auth.apiBaseUrl,
           tenant: conf.auth.tenant,
           secureRoutes: conf.auth.secureRoutes || [],
+
+          apiRootUrl: conf.other.apiRootUrl || 'http://localhost:3000',
+          webSocketEndpoint: conf.other.WebSocketService || "ws://localhost:3000/websocket"
         };
       })
     );
