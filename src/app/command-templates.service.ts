@@ -10,8 +10,6 @@ export class CommandTemplatesService {
 
   _commandTemplates$ = new BehaviorSubject<CommandTemplate[]>([]);
 
-  //_selectedTemplateParams$ = new BehaviorSubject<CommandTemplateParameter[]>([]);
-
   constructor(private dataService: DataService) {
     this.dataService.commandTemplates().subscribe(templates => {
       this._commandTemplates$.next(templates);

@@ -13,6 +13,10 @@
     <app-db-viewer></app-db-viewer>
 </div>
 
+<div id="custom-views-tab" *ngIf="selectedTab=='custom-views'">
+    <app-custom-views></app-custom-views>
+</div>
+
 <div id="export-tab" *ngIf="selectedTab=='export'">
     <app-db-export></app-db-export>
 </div>

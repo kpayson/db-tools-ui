@@ -1,0 +1,40 @@
+.wrapper {
+    background-color: whitesmoke;
+    list-style-type: none;
+    padding: 0;
+    border-radius: 3px;
+  
+  }
+  
+  .form-group {
+    display: flex;
+    justify-content: flex-end;
+    padding: .5em;
+  }
+  
+  .form-group>label {
+    width:100px;
+    padding: .5em 1em .5em 0;
+    flex: 1;
+    border:1px sold red;
+    color:blue;
+    background-color: pink;
+    display:block;
+  }
+  
+  .form-group>input,
+  .form-group>p-dropdown {
+    flex: 2;
+  }
+  
+  .form-group>input,
+
+  .form-group>button {
+    padding: .5em;
+  }
+  
+  .form-group>button {
+    background: gray;
+    color: white;
+    border: 0;
+  }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { TableInfo, TableWithColumnsInfo, PerfTestResult, 
-  CommandTemplate, CommandTemplateParameter, CommandRunResult } from './models';
+  CommandTemplate, CommandTemplateParameter, CommandRunResult, CustomView, CustomViewParameter } from './models';
 import { ExportEntity } from './models/exportEntity';
 import { DBConnection } from './models/dbConnection';
 import { AuthService } from './services/auth.service';
@@ -126,12 +126,12 @@ export class DataService {
   }
 
   public commandTemplateDelete(commandTemplateId:number) {
-    const res$ = this.delete<DBConnection>(`command-templates/${commandTemplateId}`);
+    const res$ = this.delete<CommandTemplate>(`command-templates/${commandTemplateId}`);
     return res$;
   }
 
   public commandTemplateUpdate(commandTemplate:CommandTemplate) {
-    const res$ = this.put<DBConnection>(`command-templates/${commandTemplate.id}`,commandTemplate);
+    const res$ = this.put<CommandTemplate>(`command-templates/${commandTemplate.id}`,commandTemplate);
     return res$;
   }
 
@@ -154,6 +154,38 @@ export class DataService {
     const res$ = this.get<string>(`command-run-results/${commandResultId}/htmlReport`);
     return res$;
   }
+
+  public customViews() {
+    const res$ = this.get<CustomView[]>(`custom-views`);
+    return res$
+  }
+
+  public customViewAdd(customView:CustomView) {
+    const res$ = this.post<CustomView>(`custom-views`, customView);
+    return res$
+  }
+
+  public customViewDelete(customViewId:number) {
+    const res$ = this.delete<CustomView>(`custom-views/${customViewId}`);
+    return res$;
+  }
+
+  public customViewUpdate(customView:CustomView) {
+    const res$ = this.put<CustomView>(`custom-views/${customView.id}`,customView);
+    return res$;
+  }
+
+  public customViewWithParameters(customViewId:number) {
+    const res$ = this.get<CommandTemplate[]>(`custom-views/${customViewId}`);
+    return res$
+  }
+
+  public customViewParameters(customViewId:number) {
+    const res$ = this.get<CommandTemplateParameter[]>(`command-templates/${customViewId}/parameters`);
+    return res$
+  }
+
+  
 
 
 }

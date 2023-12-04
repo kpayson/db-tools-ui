@@ -1,0 +1,23 @@
+
+<form [formGroup]="form">
+
+    <div class="form-group" >
+      <label>Custom Views</label>
+
+      <p-dropdown formControlName="selectedView" (onChange)="selectedViewChange($event)"
+          [options]="(state.entities$| async) || []" 
+          optionLabel="name" >
+          <ng-template let-view pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                  <div>{{ view.name }}</div>
+              </div>
+          </ng-template>
+      </p-dropdown>
+      <p-button (click)="editSelectedClick()" label="Edit View" styleClass="p-button-text"></p-button>
+      <p-button (click)="addNewClick()" label="Add View" styleClass="p-button-text"></p-button>
+
+      <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+      <p-button (click)="confirmDelete($event)" label="Delete View" styleClass="p-button-text"></p-button>
+
+    </div>
+</form>

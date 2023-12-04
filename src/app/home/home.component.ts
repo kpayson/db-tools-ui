@@ -43,6 +43,12 @@ export class HomeComponent implements OnInit {
       }
     },
     {
+      label: "Custom Views",
+      command: (event: any) => {
+        this.selectedTab = 'custom-views';
+      }
+    },
+    {
       label: "Export",
       command: (event: any) => {
         this.selectedTab = 'export';

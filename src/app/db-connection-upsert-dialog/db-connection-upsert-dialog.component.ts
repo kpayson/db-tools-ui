@@ -6,7 +6,7 @@ import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 @Component({
   selector: 'app-db-connection-upsert-dialog',
   templateUrl: './db-connection-upsert-dialog.component.html',
-  styleUrls: ['./db-connection-upsert-dialog.component.scss']
+  styleUrls: ['../../form-styles.scss']
 })
 export class DbConnectionUpsertDialogComponent {
   

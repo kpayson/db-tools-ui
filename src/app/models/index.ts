@@ -5,3 +5,5 @@ export * from './exportEntity';
 export * from './perfTestResult';
 export * from './tablesWithColumns';
 export * from './commandRunResult';
+export * from './customView';
+export * from './customViewParameter';

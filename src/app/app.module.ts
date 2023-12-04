@@ -27,6 +27,8 @@ import { AuthService } from './services/auth.service';
 import { HeaderComponent } from './header/header.component';
 import { DbConnectionUpsertDialogComponent } from './db-connection-upsert-dialog/db-connection-upsert-dialog.component';
 import { ServerJobUpsertDialogComponent } from './server-job-upsert-dialog/server-job-upsert-dialog.component';
+import { CustomViewsComponent } from './custom-views/custom-views.component';
+import { CustomViewsUpsertDialogComponent } from './custom-views-upsert-dialog/custom-views-upsert-dialog.component';
 
 
 @NgModule({
@@ -49,7 +51,9 @@ import { ServerJobUpsertDialogComponent } from './server-job-upsert-dialog/serve
     HomeComponent,
     HeaderComponent,
     DbConnectionUpsertDialogComponent,
-    ServerJobUpsertDialogComponent
+    ServerJobUpsertDialogComponent,
+    CustomViewsComponent,
+    CustomViewsUpsertDialogComponent
   ],
   imports: [
     BrowserModule,
