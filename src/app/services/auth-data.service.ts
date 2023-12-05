@@ -45,14 +45,14 @@ export class AuthDataService {
   }
 
   getUserData$(url: string): Observable<any> {
-    let userData$ = this.httpClient
+    const userData$ = this.httpClient
       .get(url)
       .pipe(catchError(this.handleError));
     return userData$;
   }
 
   async getGroups(): Promise<any> {
-    let conf = await this.getConfig();
+    const conf = await this.getConfig();
     return new Promise((resolve) => {
       this.getUserData$(conf.apiBaseUrl + "/auth" + GROUPS_URL).subscribe((data) => {
         console.log('getGroups ()): %O', data);
@@ -62,7 +62,7 @@ export class AuthDataService {
   }
 
   async getTenants(): Promise<any> {
-    let conf = await this.getConfig();
+    const conf = await this.getConfig();
     return new Promise((resolve) => {
       this.getUserData$(conf.apiBaseUrl + TENANTS_URL).subscribe((data) => {
         console.log('getTenants(): %O', data);

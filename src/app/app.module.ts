@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +30,7 @@ import { DbConnectionUpsertDialogComponent } from './db-connection-upsert-dialog
 import { ServerJobUpsertDialogComponent } from './server-job-upsert-dialog/server-job-upsert-dialog.component';
 import { CustomViewsComponent } from './custom-views/custom-views.component';
 import { CustomViewsUpsertDialogComponent } from './custom-views-upsert-dialog/custom-views-upsert-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -57,6 +59,7 @@ import { CustomViewsUpsertDialogComponent } from './custom-views-upsert-dialog/c
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ThirdPartyComponentsModule,
     HttpClientModule,
@@ -69,18 +72,3 @@ import { CustomViewsUpsertDialogComponent } from './custom-views-upsert-dialog/c
 })
 export class AppModule { }
 
-
-// @NgModule({
-//   declarations: [AppComponent, TestpageComponent],
-//   imports: [
-//     BrowserModule,
-//     HttpClientModule,
-//     AppRoutingModule,
-//     AuthConfigModule
-//   ],
-//   providers: [
-//     AuthService
-//   ],
-//   bootstrap: [AppComponent],
-// })
-// export class AppModule {}

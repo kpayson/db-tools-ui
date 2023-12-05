@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CustomViewsUpsertDialogComponent } from '../custom-views-upsert-dialog/custom-views-upsert-dialog.component';
 import { CustomViewsStateService } from '../custom-views-state.service';
@@ -28,11 +28,10 @@ export class CustomViewsComponent implements OnInit {
     this.form = this.fb.group({
       selectedView: null as CustomView | null,
     });
-
   }
 
   get selectedViewId() {
-    return this.form.get('selectedTemplate')?.value?.id || null
+    return this.form.get('selectedView')?.value?.id || null
   }
 
   selectedViewChange($event: any) {
@@ -41,8 +40,8 @@ export class CustomViewsComponent implements OnInit {
 
   editSelectedClick() {
     this.ref = this.dialogService.open(CustomViewsUpsertDialogComponent, {
-      data: { mode: 'edit', customView: this.form.get('selectedView')?.value },
-      header: 'Add New Custom View',
+      data: { mode: 'edit', customView: this.state.selectedEntity },
+      header: 'Edit Custom View',
       width: '95%',
       height: '95%',
       contentStyle: { overflow: 'auto' },

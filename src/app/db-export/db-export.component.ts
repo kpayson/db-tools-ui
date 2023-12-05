@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
 } from '@angular/forms';
@@ -10,13 +10,13 @@ import { DbToolsService } from '../db-tools.service';
   templateUrl: './db-export.component.html',
   styleUrls: ['./db-export.component.scss']
 })
-export class DbExportComponent {
+export class DbExportComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
     public toolsService: DbToolsService) {}
 
-  treeSelection: TreeNode[] = [];
+  treeSelection!: any;
 
   exportFormGroup = this.fb.group({
     filterConditionsText: ''
@@ -27,6 +27,9 @@ export class DbExportComponent {
     return this.exportFormGroup.get("filterConditionsText")?.value || '';
   }
 
+  ngOnInit() {
+    this.treeSelection = [] as TreeNode[];
+  }
 
   exportClick() {
     try {

@@ -14,7 +14,7 @@ export interface CrudStateActions<Entity> {
 export class EntityStateService<T extends Entity> {
 
   _entities$ = new BehaviorSubject<T[]>([]);
-  _selectedEntity= new BehaviorSubject<T | null>(null)
+  _selectedEntityId: number | undefined = undefined;
 
   constructor(private crudActions:CrudStateActions<T>) {
     crudActions.getAll().subscribe(entities => {
@@ -26,10 +26,9 @@ export class EntityStateService<T extends Entity> {
     return this._entities$.asObservable();
   }
 
-  public get selectedEntity() {
-    return this._selectedEntity.pipe(filter(item => item !== null), map(item => item as T));
-    }
-
+  public get selectedEntity() { 
+    return this._entities$.value.find(c=>c.id === this._selectedEntityId);
+  }
 
   public add(entity:T) {
     this.crudActions.add(entity).subscribe(entity => {
@@ -38,13 +37,13 @@ export class EntityStateService<T extends Entity> {
   }
 
   public update(entity:T) {
-    this.crudActions.update(entity).subscribe(entity => {
-      this._entities$.next([...this._entities$.value.map(c=>c.id === entity.id ? entity : c), entity]);
+    this.crudActions.update(entity).subscribe(() => {
+      this._entities$.next([...this._entities$.value.map(c=>c.id === entity.id ? entity : c)]);
     })
   }
 
   public setSelected(entity:T) {
-    this._selectedEntity.next(entity);
+    this._selectedEntityId = entity.id
   }
 
   public delete(id:number) {

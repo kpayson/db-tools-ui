@@ -11,7 +11,7 @@ export class ConfigService {
   constructor(private httpClient: HttpClient) {}
 
   getConfig$(): Observable<any> {
-    let config$ = this.httpClient.get<any>(CONF_FILE_PATH).pipe(
+    const config$ = this.httpClient.get<any>(CONF_FILE_PATH).pipe(
       map((conf: any) => {
         return {
           authority: conf.auth.authority,

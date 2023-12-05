@@ -49,10 +49,9 @@ textarea {
   margin-top: -4px;
 }
 
-button {
-  padding: 5px 15px;
-  margin: 5px;
-  min-width: 100px
+button, p-button {
+  padding-left: 15px;
+
 }
 
 .action-buttons {

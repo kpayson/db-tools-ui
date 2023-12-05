@@ -18,14 +18,17 @@
     flex: 1;
     border:1px sold red;
     color:blue;
-    background-color: pink;
+    background-color: yellow;
     display:block;
   }
   
   .form-group>input,
-  .form-group>p-dropdown {
+  .form-group>textarea,
+  .form-group>p-dropdown,
+  .form-group>.field-container {
     flex: 2;
   }
+ 
   
   .form-group>input,
 

@@ -14,12 +14,12 @@ export class AuthService {
     return this._userData;
   }
 
-  private _userName: string = '';
+  private _userName = '';
   public get userName(): string {
     return this._userName;
   }
 
-  private _isAuthenticated: boolean = false;
+  private _isAuthenticated = false;
   public get isAuthenticated(): boolean {
     return this._isAuthenticated;
   }

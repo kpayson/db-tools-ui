@@ -1,4 +1,4 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -28,7 +28,7 @@ import { TreeModule } from 'primeng/tree';
   declarations: [],
   imports: [],
   exports: [
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     ButtonModule,
     CalendarModule,
     CheckboxModule,

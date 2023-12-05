@@ -6,7 +6,10 @@
 
       <p-dropdown formControlName="selectedView" (onChange)="selectedViewChange($event)"
           [options]="(state.entities$| async) || []" 
-          optionLabel="name" >
+          
+          optionLabel="name"
+          dataKey="id"
+          >
           <ng-template let-view pTemplate="item">
               <div class="flex align-items-center gap-2">
                   <div>{{ view.name }}</div>

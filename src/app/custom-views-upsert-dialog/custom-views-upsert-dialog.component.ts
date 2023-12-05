@@ -8,6 +8,7 @@ import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
   selector: 'app-custom-views-upsert-dialog',
   templateUrl: './custom-views-upsert-dialog.component.html',
   styleUrls: ['../../form-styles.scss']
+
 })
 export class CustomViewsUpsertDialogComponent {
 
@@ -32,18 +33,18 @@ export class CustomViewsUpsertDialogComponent {
     });
 
     if(this.config.data.mode === 'edit'){
-      this.formGroup.patchValue(this.config.data.template);
+      this.formGroup.patchValue(this.config.data.customView);
       const formArray = this.formGroup.controls['parameters'] as FormArray;
-      for(const parameter of this.config.data.template.parameters){
+      for(const parameter of this.config.data.customView.parameters || []){
         formArray.push(this.fb.group({
           name: [parameter.name, Validators.required],
           dataType: [parameter.dataType, Validators.required],
           defaultValue: [parameter.defaultValue],
           id: [parameter.id],
-          commandTemplateId: [parameter.commandTemplateId]
+          customViewId: [parameter.customViewId]
         }));
       }
-      console.log(this.formGroup.value);
+
     }
   }
 
@@ -70,9 +71,9 @@ export class CustomViewsUpsertDialogComponent {
       return;
     }
     const customView:CustomView = {
-      id: this.config.data.template?.id,
+      id: this.config.data.customView?.id,
       name: this.formGroup.get('name')?.value || '',
-      description: this.config.data.template?.description || '',
+      description: this.formGroup.get('description')?.value || '',
       viewSql: this.formGroup.get('viewSql')?.value || '',
 
       parameters: this.parameters.value || [] 

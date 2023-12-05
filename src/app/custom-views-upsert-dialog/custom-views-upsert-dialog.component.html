@@ -1,20 +1,19 @@
 <div class="wrapper" [formGroup]="formGroup">
     <div class="form-group">
-      <label for="name">Name</label>
-      <input id="name" type="text" pInputText class="form-control" formControlName="name" style="width:600px">
+      <label for="name" style="width:200px;">Name</label>
+      <input id="name" type="text" pInputText class="form-control" formControlName="name" >
     </div>
     <div class="form-group">
-      <label for="description">Description</label>
-      <textarea id="description" type="text" pInputTextarea class="form-control" formControlName="description" style="width:600px">
+      <label for="description" style="width:200px;">Description</label>
+      <input id="description" type="text" pInputText class="form-control" formControlName="description" >
     </div>
     <div class="form-group">
-      <label for="template">View Sql</label>
-      <textarea id="viewSql" pInputTextarea class="form-control" formControlName="viewSql" style="width:600px"
-        rows="8"></textarea>
+      <label for="viewSql" style="width:200px;">View Sql</label>
+      <textarea id="viewSql" pInputText class="form-control" formControlName="viewSql" rows="8"></textarea>
     </div>
-    <!-- <div class="form-group" formArrayName="parameters">
+    <div class="form-group" formArrayName="parameters">
       <label>Parameters</label>
-      <div>
+      <div class="field-container">
         <table>
           <thead>
             <tr>
@@ -32,7 +31,8 @@
               </td>
               <td>
                 <p-dropdown formControlName="dataType"
-                  [options]="[{value:'string', name:'string'}, {value:'number', name:'number'}]" optionValue="value"
+                  [options]="[{value:'string', name:'string'}, {value:'number', name:'number'}]" 
+                  optionValue="value"
                   optionLabel="name">
                 </p-dropdown>
               </td>
@@ -48,7 +48,7 @@
         </table>
         <button type="button" class="btn btn-primary" (click)="addParameter()">Add Parameter</button>
       </div>
-    </div> -->
+    </div>
   
   
   </div>

@@ -6,35 +6,41 @@ import {
   } from '@storybook/angular';
 
 
-import {DbConnectionUpsertDialogComponent} from './db-connection-upsert-dialog.component';
+import { CustomViewsUpsertDialogComponent } from './custom-views-upsert-dialog.component';
 import { FormBuilder } from '@angular/forms';
-import {DbConnectionsService} from '../db-connections.service';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ThirdPartyComponentsModule } from '../3rd-party-components/3rd-party-components.module';
+import {CustomViewsStateService} from '../custom-views-state.service';
 
 const connectionServiceMock = {
     updateConnection: (connection: any) => {},
     addConnection: (connection: any) => {}
 }
 
-const meta: Meta<DbConnectionUpsertDialogComponent> = {
-    title: 'Components/db-conection-upsert-dialog',
-    component: DbConnectionUpsertDialogComponent,
+const customViewsStateServiceMock = {
+  update: (view: any) => {},
+  add: (view: any) => {}
+}
+
+const meta: Meta<CustomViewsUpsertDialogComponent> = {
+    title: 'Components/app-custom-views-upsert-dialog',
+    component: CustomViewsUpsertDialogComponent,
     excludeStories: /.*Data$/,
     tags: ['connections dialog'],
 
-    render: (args: DbConnectionUpsertDialogComponent) => ({
+    render: (args: CustomViewsUpsertDialogComponent) => ({
       props: {
         ...args,
       },
-      template: `<app-db-connection-upsert-dialog ${argsToTemplate(
+      template: `<app-custom-views-upsert-dialog ${argsToTemplate(
         args
-      )}></app-db-connection-upsert-dialog>`,
-    }),
+      )}></app-custom-views-upsert-dialog>`,
+    })
+
   };
   
   export default meta;
-  type Story = StoryObj<DbConnectionUpsertDialogComponent>;
+  type Story = StoryObj<CustomViewsUpsertDialogComponent>;
   
   export const Edit: Story = {
     args: {},
@@ -46,9 +52,11 @@ const meta: Meta<DbConnectionUpsertDialogComponent> = {
             {provide:FormBuilder},
             {provide:DynamicDialogRef},
             {provide:DynamicDialogConfig, useValue:{data: {mode:'edit'}}},
-            {provide:DbConnectionsService, useValue: connectionServiceMock}
+            {provide:CustomViewsStateService, useValue: customViewsStateServiceMock}
         ],
       }),
     ],
   };
   
+
+

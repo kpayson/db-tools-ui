@@ -5,10 +5,10 @@
             <p-tree 
                 [value]="(toolsService.tablesAndColumnsTree$ | async) || []"
                 selectionMode="checkbox" 
-                class="w-full md:w-30rem" 
-                [(selection)]="treeSelection"
->
+                class="w-full md:w-30rem"
+                [(selection)]="treeSelection">
             </p-tree>
+
         </div>
     </div>
     <div>

@@ -9,7 +9,7 @@ export const httpLoaderFactory = (configService: ConfigService) => {
     const config$ = configService.getConfig$().pipe(
     map((conf: any) => {
       console.log('conf: %O', conf);
-      let authConfig: OpenIdConfiguration = {
+      const authConfig: OpenIdConfiguration = {
         authority: conf.authority,
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
