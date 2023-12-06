@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, of, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { ConfigService } from './config.service';
 
 // https://labshare-auth-dev-0.app.cloud.gov/_api/auth/user/selfService/groups

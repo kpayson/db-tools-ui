@@ -2,9 +2,9 @@
 <form [formGroup]="form">
 
     <div class="form-group" >
-      <label>Job Template</label>
+      <label for="selectedTemplate">Job Template</label>
 
-      <p-dropdown formControlName="selectedTemplate" (onChange)="selectedTemplateChange($event)"
+      <p-dropdown id="selectedTemplate" formControlName="selectedTemplate" (onChange)="selectedTemplateChange($event)"
           [options]="(commandTemplates$ | async) || []" 
           optionLabel="name" >
           <ng-template let-command pTemplate="item">
@@ -25,9 +25,9 @@
     <br><br>
 
     <div>
-      <div class="form-group" *ngFor="let param of (selectedTemplateParams$ | async)">
-        <label>{{param.name}}</label>
-        <input [formControlName]="param.name" pInputText class="input-control" />
+      <div class="form-group" *ngFor="let param of (selectedTemplateParams$ | async); let i=index">
+        <label [for]="'templateParam'+i">{{param.name}}</label>
+        <input [id]="'templateParam'+i" [formControlName]="param.name" pInputText class="input-control" />
       </div>
     </div>
 

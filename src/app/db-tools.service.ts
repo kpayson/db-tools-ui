@@ -303,15 +303,14 @@ export class DbToolsService {
     }
   }
 
+  runCustomView(customViewId:number, params:any) {
+    return this.activeConnId$.pipe(mergeMap(connId=>this.dataService.runCustomView(customViewId, params, connId!)));
+  }
+
   commandResultReport(commandRunResultId:number){
     return this.dataService.commandResultReport(commandRunResultId);
   }
 
-  // selectCommandTemplate(templateId:number){
-  //   this.dataService.commandTemplateParameters(templateId).subscribe(params=>{
-  //     this._selectedCommandTemplateParameters$.next(params);
-  //   })
-  // }
 
   
 

@@ -1,6 +1,6 @@
 
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DbToolsService } from '../db-tools.service';
 import { CommandTemplate } from '../models';
 import { CommandTemplateParameter } from '../models/commandTemplateParameter';
@@ -181,8 +181,7 @@ export class ServerJobsComponent implements OnInit {
       message: 'Are you sure that you want to delete this template?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
-      accept: () => this.commandTemplatesService.deleteCommandTemplate(this.selectedTemplateId),
-      reject: () => {}
+      accept: () => this.commandTemplatesService.deleteCommandTemplate(this.selectedTemplateId)
   });
 }
 

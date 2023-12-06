@@ -85,6 +85,11 @@ export class DataService {
     return res$;
   }
 
+  public runCustomView(customViewId:number, params:{[paramName:string]:any}, connectionId:number) {
+    const res$ = this.post<any>(`dbTools/RunCustomView`,{customViewId,params}, connectionId);
+    return res$;
+  }
+
   public connections() {
     const res$ = this.get<DBConnection[]>(`database-connection`);
     return res$;

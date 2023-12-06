@@ -6,7 +6,6 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ThirdPartyComponentsModule } from './3rd-party-components/3rd-party-components.module';
-import { TablesAndColumnsSelectorComponent } from './tables-and-columns-selector/tables-and-columns-selector.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TablesAndColumnsViewerComponent } from './tables-and-columns-viewer/tables-and-columns-viewer.component';
 import { DbExportComponent } from './db-export/db-export.component';
@@ -36,7 +35,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
-    TablesAndColumnsSelectorComponent,
     TablesAndColumnsViewerComponent,
     DbExportComponent,
     DbImportComponent,

@@ -18,7 +18,7 @@ export class PerfTestsComponent implements OnInit {
 
   ref: DynamicDialogRef | undefined;
 
-  perfTestsAreRunning: boolean = false;
+  perfTestsAreRunning = false;
 
   numVirtualUsers = 10;
 
