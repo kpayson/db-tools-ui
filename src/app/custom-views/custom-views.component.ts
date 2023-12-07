@@ -7,6 +7,8 @@ import { CustomView } from '../models';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { DbToolsService } from '../db-tools.service';
+import { saveAs } from 'file-saver';
+
 
 @Component({
   selector: 'app-custom-views',
@@ -23,18 +25,21 @@ export class CustomViewsComponent implements OnInit {
     public state: CustomViewsStateService,
     public toolsService: DbToolsService,
     public dialogService: DialogService,
+    private messageService: MessageService,
     private fb: FormBuilder,
   ) {
   }
 
   selectedViewParams$ = new BehaviorSubject<CustomView[]>([]);
 
-  viewData: any[] = []; 
+  viewRan = false;
+  viewData: any[] = [];
   viewDataCols: any[] = [];
+  selectedRows: any[] = [];
 
   get selectedViewParamValues() {
-    const valObj:any = {};
-    for(const param of this.selectedViewParams$.value) {
+    const valObj: any = {};
+    for (const param of this.selectedViewParams$.value) {
       valObj[param.name] = this.form.get(param.name)?.value
     }
     return valObj;
@@ -50,22 +55,27 @@ export class CustomViewsComponent implements OnInit {
     return this.form.get('selectedView')?.value?.id || null
   }
 
-  selectedViewChange(evnt:{value:any}) {
-    this.state.setSelected(evnt.value);
+  get hasSelectedView() {
+    return this.form.get('selectedView')?.value ? true : false;
+  }
 
-    const currentParamNames= this.selectedViewParams$.value.map(param=>param.name);
-    for(const name of currentParamNames) {
+  selectedViewChange(evnt: { value: any }) {
+    this.state.setSelected(evnt.value);
+    this.viewRan = false;
+
+    const currentParamNames = this.selectedViewParams$.value.map(param => param.name);
+    for (const name of currentParamNames) {
       this.form.removeControl(name);
     }
 
     const newParams = evnt.value?.parameters || [];
-    for(const param of newParams) {
+    for (const param of newParams) {
       //const validator = param.required ? Validators.required : Validators.nullValidator;
       this.form.addControl(param.name, new FormControl(param.defaultValue))
     }
 
     this.selectedViewParams$.next(newParams)
-    
+
   }
 
   editSelectedClick() {
@@ -99,10 +109,43 @@ export class CustomViewsComponent implements OnInit {
   }
 
   runClick() {
-    this.toolsService.runCustomView(this.selectedViewId, this.selectedViewParamValues).subscribe((data)=>{
+    this.viewRan = false;
+    this.viewData = [];
+
+    this.toolsService.runCustomView(this.selectedViewId, this.selectedViewParamValues).subscribe((data) => {
       this.viewData = data;
-      this.viewDataCols = Object.keys(data[0]);
+      this.viewDataCols = data.some(Boolean) ? Object.keys(data[0]) : [];
+      this.viewRan = true;
+    },(err)=>{  
+      this.messageService.add({severity:'error', summary: 'Error', detail: err.error.message});
     });
+  }
+
+  exportExcel() {
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.viewData);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const excelBuffer: any = xlsx.write(workbook, {
+        bookType: "xlsx",
+        type: "array"
+      });
+      this.saveAsExcelFile(excelBuffer, "products");
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    //import("file-saver").then(FileSaver => {
+      let EXCEL_TYPE =
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+      let EXCEL_EXTENSION = ".xlsx";
+      const data: Blob = new Blob([buffer], {
+        type: EXCEL_TYPE
+      });
+      saveAs(
+        data,
+        fileName + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+      );
+    //});
   }
 
 }

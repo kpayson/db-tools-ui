@@ -3,7 +3,9 @@ import { FormControl, FormBuilder, FormGroup, FormArray, Validators } from '@ang
 import { CustomView } from '../models';
 import { CustomViewsStateService } from '../custom-views-state.service';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+//import { Parser } from 'node-sql-parser';
 
+//const { Parser } = require('node-sql-parser');
 @Component({
   selector: 'app-custom-views-upsert-dialog',
   templateUrl: './custom-views-upsert-dialog.component.html',
@@ -70,6 +72,15 @@ export class CustomViewsUpsertDialogComponent {
     if(this.formGroup.invalid){
       return;
     }
+    // const viewSql = this.formGroup.get('viewSql')?.value || '';
+     //const parser = new Parser();
+    // const ast = parser.astify(viewSql) as any;
+
+    // if(ast.type !== 'select'){
+    //   alert('Only SELECT statements are supported');
+    //   return;
+    // }
+
     const customView:CustomView = {
       id: this.config.data.customView?.id,
       name: this.formGroup.get('name')?.value || '',

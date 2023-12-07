@@ -1,26 +1,21 @@
-
 <form [formGroup]="form">
 
-    <div class="form-group" >
-      <label for="selectedView">Custom Views</label>
+    <div class="form-group">
+        <label for="selectedView">Custom Views</label>
 
-      <p-dropdown id="selectedView" formControlName="selectedView" (onChange)="selectedViewChange($event)"
-          [options]="(state.entities$| async) || []" 
-          
-          optionLabel="name"
-          dataKey="id"
-          >
-          <ng-template let-view pTemplate="item">
-              <div class="flex align-items-center gap-2">
-                  <div>{{ view.name }}</div>
-              </div>
-          </ng-template>
-      </p-dropdown>
-      <p-button (click)="editSelectedClick()" label="Edit View" styleClass="p-button-text"></p-button>
-      <p-button (click)="addNewClick()" label="Add View" styleClass="p-button-text"></p-button>
+        <p-dropdown id="selectedView" formControlName="selectedView" (onChange)="selectedViewChange($event)"
+            [options]="(state.entities$| async) || []" optionLabel="name" dataKey="id">
+            <ng-template let-view pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ view.name }}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+        <p-button [disabled]="!hasSelectedView" (click)="editSelectedClick()" label="Edit View" styleClass="p-button-text"></p-button>
+        <p-button (click)="addNewClick()" label="Add View" styleClass="p-button-text"></p-button>
 
-      <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-      <p-button (click)="confirmDelete($event)" label="Delete View" styleClass="p-button-text"></p-button>
+        <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+        <p-button [disabled]="!hasSelectedView" (click)="confirmDelete($event)" label="Delete View" styleClass="p-button-text"></p-button>
 
     </div>
 
@@ -37,21 +32,49 @@
 
     <br><br>
 
-    <p-table [columns]="viewDataCols" [value]="viewData" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table #dt *ngIf="viewRan" 
+        [columns]="viewDataCols" 
+        [value]="viewData" 
+        [tableStyle]="{ 'min-width': '50rem', 'max-width': '1000px' }"
+        selectionMode="multiple" 
+        [(selection)]="selectedRows"
+        [scrollable]="true" 
+        scrollHeight="400px" 
+        scrollDirection="both" 
+        [resizableColumns]="true"
+        >
+        <ng-template pTemplate="caption">
+
+            <div style="display:flex; justify-content:space-between">
+                <div>{{form.get('selectedView')?.value?.name || ' '}}</div>
+                <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+                    class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+            </div>
+        </ng-template>
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th *ngFor="let col of columns">
+                <th pResizableColumn *ngFor="let col of columns" style="max-width:200px;">
                     {{ col }}
                 </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
+            <tr [pSelectableRow]="rowData">
                 <td *ngFor="let col of columns">
                     {{ rowData[col] }}
                 </td>
             </tr>
         </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="columns.length">
+                 No records found
+              </td>
+            </tr>
+        </ng-template>
+
     </p-table>
 
 </form>
+
+<p-toast position="center"></p-toast>

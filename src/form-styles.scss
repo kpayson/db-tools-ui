@@ -13,20 +13,17 @@
   }
   
   .form-group>label {
-    width:100px;
+
     padding: .5em 1em .5em 0;
     flex: 1;
-    border:1px sold red;
-    color:blue;
-    background-color: yellow;
     display:block;
   }
   
   .form-group>input,
-  .form-group>textarea,
+  // .form-group>textarea,
   .form-group>p-dropdown,
   .form-group>.field-container {
-    flex: 2;
+    flex: 5;
   }
  
   
