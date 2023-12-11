@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { TableInfo, TableWithColumnsInfo, PerfTestResult, 
-  CommandTemplate, CommandTemplateParameter, CommandRunResult, CustomView, CustomViewParameter } from './models';
+  CommandTemplate, CommandTemplateParameter, CommandRunResult, CustomView, CustomViewParameter, DataReport, DataReportParameter } from './models';
 import { ExportEntity } from './models/exportEntity';
 import { DBConnection } from './models/dbConnection';
 import { AuthService } from './services/auth.service';
@@ -26,6 +26,14 @@ export class DataService {
     }))
   }
 
+  private get headersTextHtml$() {
+    return this.authService.getAccessToken().pipe(map(token=>{
+      const header = new HttpHeaders().set('Accept', 'text/html')
+        .set('Authorization', 'Bearer ' + token);
+      return header;
+    }))
+  }
+
   private get<T>(url: string, connectionId?:number) {
     return this.headers$.pipe(mergeMap(headers=>{
       if(connectionId) {url += `?connectionId=${connectionId}`;}
@@ -38,6 +46,13 @@ export class DataService {
     return this.headers$.pipe(mergeMap(headers=>{
       if(connectionId) {url += `?connectionId=${connectionId}`;}
       return this.http.post<T>(`${environment.apiRootUrl}/${url}`, body, {headers:headers}); 
+    }));
+  }
+
+  private postTextHtml(url: string, body: any, connectionId?:number) {
+    return this.headers$.pipe(mergeMap(headers=>{
+      if(connectionId) {url += `?connectionId=${connectionId}`;}
+      return this.http.post(`${environment.apiRootUrl}/${url}`, body, {headers, responseType: 'text' })
     }));
   }
 
@@ -87,6 +102,11 @@ export class DataService {
 
   public runCustomView(customViewId:number, params:{[paramName:string]:any}, connectionId:number) {
     const res$ = this.post<any>(`dbTools/RunCustomView`,{customViewId,params}, connectionId);
+    return res$;
+  }
+
+  public runDataReport(dataReportId:number, params:{reportParams:{[paramName:string]:any}, viewParams:{[paramName:string]:any}}, connectionId:number) {
+    const res$ = this.postTextHtml(`dbTools/RunDataReport`,{dataReportId,params}, connectionId);
     return res$;
   }
 
@@ -181,16 +201,45 @@ export class DataService {
   }
 
   public customViewWithParameters(customViewId:number) {
-    const res$ = this.get<CommandTemplate[]>(`custom-views/${customViewId}`);
+    const res$ = this.get<CustomView[]>(`custom-views/${customViewId}`);
     return res$
   }
 
   public customViewParameters(customViewId:number) {
-    const res$ = this.get<CommandTemplateParameter[]>(`command-templates/${customViewId}/parameters`);
+    const res$ = this.get<CustomViewParameter[]>(`custom-views/${customViewId}/parameters`);
+    return res$
+  }
+
+
+  public dataReports() {
+    const res$ = this.get<DataReport[]>(`data-reports`);
+    return res$
+  }
+
+  public dataReportAdd(dataReport:DataReport) {
+    const res$ = this.post<DataReport>(`data-reports`, dataReport);
+    return res$
+  }
+
+  public dataReportDelete(dataReportId:number) {
+    const res$ = this.delete<DataReport>(`data-reports/${dataReportId}`);
+    return res$;
+  }
+
+  public dataReportUpdate(dataReport:DataReport) {
+    const res$ = this.put<DataReport>(`data-reports/${dataReport.id}`,dataReport);
+    return res$;
+  }
+
+  public dataReportWithParameters(dataReportId:number) {
+    const res$ = this.get<DataReport[]>(`data-reports/${dataReportId}`);
+    return res$
+  }
+
+  public dataReportParameters(dataReportId:number) {
+    const res$ = this.get<DataReportParameter[]>(`data-reports/${dataReportId}/parameters`);
     return res$
   }
 
   
-
-
 }

@@ -26,6 +26,10 @@ export class EntityStateService<T extends Entity> {
     return this._entities$.asObservable();
   }
 
+  public findById(id:number) {
+    return this._entities$.value.find(c=>c.id === id);
+  }
+
   public get selectedEntity() { 
     return this._entities$.value.find(c=>c.id === this._selectedEntityId);
   }

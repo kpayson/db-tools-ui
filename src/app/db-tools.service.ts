@@ -307,6 +307,10 @@ export class DbToolsService {
     return this.activeConnId$.pipe(mergeMap(connId=>this.dataService.runCustomView(customViewId, params, connId!)));
   }
 
+  runDataReport(dataReportId:number, params:{reportParams:any,viewParams:any}) {
+    return this.activeConnId$.pipe(mergeMap(connId=>this.dataService.runDataReport(dataReportId, params, connId!)));
+  }
+
   commandResultReport(commandRunResultId:number){
     return this.dataService.commandResultReport(commandRunResultId);
   }

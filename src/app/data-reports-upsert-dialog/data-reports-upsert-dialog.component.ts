@@ -1,47 +1,58 @@
 import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { CustomView } from '../models';
+import { DataReport, CustomView } from '../models';
 import { CustomViewsStateService } from '../custom-views-state.service';
+import { DataReportsStateService } from '../data-reports-state.service';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @Component({
-  selector: 'app-custom-views-upsert-dialog',
-  templateUrl: './custom-views-upsert-dialog.component.html',
+  selector: 'app-data-reports-upsert-dialog',
+  templateUrl: './data-reports-upsert-dialog.component.html',
   styleUrls: ['../../form-styles.scss']
-
 })
-export class CustomViewsUpsertDialogComponent {
-
+export class DataReportsUpsertDialogComponent {
   formGroup: FormGroup<{
     name: FormControl<string | null>;
     description: FormControl<string | null>;
-    viewSql: FormControl<string | null>;
+    // customView: FormControl<CustomView | null>;
+    customViewId: FormControl<number | null>;
+    reportTemplate: FormControl<string | null>;
     parameters: any;
   }>;
 
   constructor(
     private fb: FormBuilder, 
-    public state:CustomViewsStateService,
+    public customViewsService:CustomViewsStateService,
+    public state:DataReportsStateService,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
   ) { 
+
+    const cv = {
+      id:0, name:'',description:'',viewSql:'',parameters:[] as any[]
+    }
+
+
     this.formGroup = fb.group({
       name: ['', Validators.required],
       description: [''],
-      viewSql: ['', Validators.required],
+      //customView: [cv, Validators.required],
+      customViewId: [null as number | null, Validators.required],
+      reportTemplate: ['', Validators.required],
+
       parameters: this.fb.array([])
     });
 
     if(this.config.data.mode === 'edit'){
-      this.formGroup.patchValue(this.config.data.customView);
+      this.formGroup.patchValue(this.config.data.dataReport);
       const formArray = this.formGroup.controls['parameters'] as FormArray;
-      for(const parameter of this.config.data.customView.parameters || []){
+      for(const parameter of this.config.data.dataReport.parameters || []){
         formArray.push(this.fb.group({
           name: [parameter.name, Validators.required],
-          dataType: [parameter.dataType, Validators.required],
+          //dataType: [parameter.dataType, Validators.required],
           defaultValue: [parameter.defaultValue],
           id: [parameter.id],
-          customViewId: [parameter.customViewId]
+          dataReportId: [parameter.dataReportId]
         }));
       }
 
@@ -53,10 +64,14 @@ export class CustomViewsUpsertDialogComponent {
     return this.formGroup.get('parameters') as FormArray;
   }
 
+  get customViewId() {
+    return this.formGroup.get('customViewId')?.value || null
+  }
+
   addParameter() {
     const parameter = this.fb.group({
       name: ['', Validators.required],
-      dataType: ['string', Validators.required],
+      // dataType: ['string', Validators.required],
       defaultValue: ['']
     });
     this.parameters.push(parameter);
@@ -71,19 +86,20 @@ export class CustomViewsUpsertDialogComponent {
       return;
     }
 
-    const customView:CustomView = {
-      id: this.config.data.customView?.id,
+    const dataReport:DataReport = {
+      id: this.config.data.dataReport?.id,
       name: this.formGroup.get('name')?.value || '',
       description: this.formGroup.get('description')?.value || '',
-      viewSql: this.formGroup.get('viewSql')?.value || '',
+      reportTemplate: this.formGroup.get('reportTemplate')?.value || '',
+      customViewId: this.customViewId!,
 
       parameters: this.parameters.value || [] 
     }
 
     if(this.config.data.mode === 'edit'){
-      this.state.update(customView);
+      this.state.update(dataReport);
     } else {
-      this.state.add(customView);
+      this.state.add(dataReport);
     }
 
     this.ref.close();
@@ -92,5 +108,4 @@ export class CustomViewsUpsertDialogComponent {
   cancel() {
     this.ref.close();
   }
-
 }

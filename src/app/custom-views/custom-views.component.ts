@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { CustomViewsUpsertDialogComponent } from '../custom-views-upsert-dialog/custom-views-upsert-dialog.component';
 import { CustomViewsStateService } from '../custom-views-state.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { CustomView } from '../models';
+import { CustomView, CustomViewParameter } from '../models';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { DbToolsService } from '../db-tools.service';
@@ -30,7 +30,7 @@ export class CustomViewsComponent implements OnInit {
   ) {
   }
 
-  selectedViewParams$ = new BehaviorSubject<CustomView[]>([]);
+  selectedViewParams$ = new BehaviorSubject<CustomViewParameter[]>([]);
 
   viewRan = false;
   viewData: any[] = [];
@@ -112,13 +112,16 @@ export class CustomViewsComponent implements OnInit {
     this.viewRan = false;
     this.viewData = [];
 
-    this.toolsService.runCustomView(this.selectedViewId, this.selectedViewParamValues).subscribe((data) => {
-      this.viewData = data;
-      this.viewDataCols = data.some(Boolean) ? Object.keys(data[0]) : [];
-      this.viewRan = true;
-    },(err)=>{  
-      this.messageService.add({severity:'error', summary: 'Error', detail: err.error.message});
-    });
+    this.toolsService.runCustomView(this.selectedViewId, this.selectedViewParamValues).subscribe({
+      next: (data) => {
+        this.viewData = data;
+        this.viewDataCols = data.some(Boolean) ? Object.keys(data[0]) : [];
+        this.viewRan = true;
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.message });
+      }
+    })
   }
 
   exportExcel() {

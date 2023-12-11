@@ -17,6 +17,10 @@
     <app-custom-views></app-custom-views>
 </div>
 
+<div id="data-reports-tab" *ngIf="selectedTab==='data-reports'">
+    <app-data-reports></app-data-reports>
+</div>
+
 <div id="export-tab" *ngIf="selectedTab==='export'">
     <app-db-export></app-db-export>
 </div>

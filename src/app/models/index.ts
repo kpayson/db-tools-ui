@@ -7,3 +7,5 @@ export * from './tablesWithColumns';
 export * from './commandRunResult';
 export * from './customView';
 export * from './customViewParameter';
+export * from './dataReport';
+export * from './dataReportParameter';

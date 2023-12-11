@@ -30,6 +30,9 @@ import { ServerJobUpsertDialogComponent } from './server-job-upsert-dialog/serve
 import { CustomViewsComponent } from './custom-views/custom-views.component';
 import { CustomViewsUpsertDialogComponent } from './custom-views-upsert-dialog/custom-views-upsert-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DataReportsComponent } from './data-reports/data-reports.component';
+import { DataReportsUpsertDialogComponent } from './data-reports-upsert-dialog/data-reports-upsert-dialog.component';
+import { DataReportResultDialogComponent } from './data-report-result-dialog/data-report-result-dialog.component';
 
 
 @NgModule({
@@ -53,7 +56,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DbConnectionUpsertDialogComponent,
     ServerJobUpsertDialogComponent,
     CustomViewsComponent,
-    CustomViewsUpsertDialogComponent
+    CustomViewsUpsertDialogComponent,
+    DataReportsComponent,
+    DataReportsUpsertDialogComponent,
+    DataReportResultDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -49,6 +49,12 @@ export class HomeComponent implements OnInit {
       }
     },
     {
+      label: "Data Reports",
+      command: (event: any) => {
+        this.selectedTab = 'data-reports';
+      }
+    },
+    {
       label: "Export",
       command: (event: any) => {
         this.selectedTab = 'export';

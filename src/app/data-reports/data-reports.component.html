@@ -1,0 +1,44 @@
+<form [formGroup]="form">
+
+    <div class="form-group">
+        <label for="selectedReport">Data Reports</label>
+
+        <p-dropdown id="selectedReport" formControlName="selectedReport" (onChange)="selectedReportChange($event)"
+            [options]="(state.entities$| async) || []" optionLabel="name" dataKey="id">
+            <ng-template let-view pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ view.name }}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+        <p-button [disabled]="!hasSelectedReport" (click)="editSelectedClick()" label="Edit Report" styleClass="p-button-text"></p-button>
+        <p-button (click)="addNewClick()" label="Add Report" styleClass="p-button-text"></p-button>
+
+        <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+        <p-button [disabled]="!hasSelectedReport" (click)="confirmDelete($event)" label="Delete Report" styleClass="p-button-text"></p-button>
+
+    </div>
+
+    <br><br>
+    <h2>Report Parameters</h2>
+    <div class="form-group" *ngFor="let param of (selectedReportParams$ | async); let i=index">
+        <label [for]="'reportParam'+i">{{param.name}}</label>
+        <input [id]="'reportParam'+i" [formControlName]="param.name" pInputText class="input-control" />
+    </div>
+
+    <br>
+
+    <h2>View Parameters</h2>
+    <div>
+        <div class="form-group" *ngFor="let param of (customViewParams$ | async); let i=index">
+            <label [for]="'viewParam'+i">{{param.name}}</label>
+            <input [id]="'viewParam'+i" [formControlName]="param.name" pInputText class="input-control" />
+        </div>
+    </div>
+
+    <br>
+    <div class="action-buttons">
+        <p-button (click)="runClick()">Run</p-button>
+    </div>
+
+</form>
