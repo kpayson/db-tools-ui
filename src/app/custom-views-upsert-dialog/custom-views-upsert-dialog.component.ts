@@ -48,10 +48,27 @@ export class CustomViewsUpsertDialogComponent {
     }
   }
 
-
+  editorErrors: any[] = [];
+  
   get parameters() {
     return this.formGroup.get('parameters') as FormArray;
   }
+
+  get viewSql() {
+    return this.formGroup.get('viewSql')?.value || "";
+  }
+
+  updateViewSql = (sql:string) => {
+    this.formGroup.patchValue({
+      viewSql: sql
+    });
+  };
+
+  onErrorsChange = (errors: any[]) => {
+    this.editorErrors = errors;
+  };
+
+
 
   addParameter() {
     const parameter = this.fb.group({

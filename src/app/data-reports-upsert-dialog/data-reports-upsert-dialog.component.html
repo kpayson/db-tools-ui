@@ -21,9 +21,14 @@
     <div class="form-group">
       <label for="reportTemplate" style="width:200px;">Report Template</label>
       <div class="field-container">
-        <textarea id="reportTemplate" pInputText class="form-control" formControlName="reportTemplate" rows="8" style="width:100%;"></textarea>
-        <br>
-        <i></i>
+        <app-code-editor 
+          id="reportTemplate"
+          [initialData]="config.data?.dataReport?.reportTemplate || ''"
+          [receivedData]="updateTemplate"
+          [errors]="onErrorsChange"
+          [fileMode]="'html'"
+          [minLines]="10"
+          ></app-code-editor>
       </div>
 
     </div>

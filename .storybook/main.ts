@@ -5,9 +5,9 @@ const config: StorybookConfig = {
   stories: ['../src/app/**/*.stories.@(js|ts|mdx)'],
   staticDirs: [{ from: '../src/assets', to: '/assets' }],
   addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
+    // "@storybook/addon-links",
+    // "@storybook/addon-essentials",
+    // "@storybook/addon-interactions",
   ],
   framework: {
     name: "@storybook/angular",

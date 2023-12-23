@@ -1,4 +1,6 @@
 <h2>Report Result</h2>
+<i class="pi pi-file-pdf" (click)="pdfDownload()"></i>
+<i class="pi pi-send" (click)="sendEmail()"></i>
 
 <iframe [srcdoc]="safeHtml | sanitizedHtml" width="100%" height="100%">
 

@@ -33,6 +33,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataReportsComponent } from './data-reports/data-reports.component';
 import { DataReportsUpsertDialogComponent } from './data-reports-upsert-dialog/data-reports-upsert-dialog.component';
 import { DataReportResultDialogComponent } from './data-report-result-dialog/data-report-result-dialog.component';
+import { SendReportEmailDialogComponent } from './send-report-email-dialog/send-report-email-dialog.component';
+import { CodeEditorComponent } from './code-editor/code-editor.component';
+
 
 
 @NgModule({
@@ -59,7 +62,10 @@ import { DataReportResultDialogComponent } from './data-report-result-dialog/dat
     CustomViewsUpsertDialogComponent,
     DataReportsComponent,
     DataReportsUpsertDialogComponent,
-    DataReportResultDialogComponent
+    DataReportResultDialogComponent,
+    SendReportEmailDialogComponent,
+    CodeEditorComponent,
+
   ],
   imports: [
     BrowserModule,

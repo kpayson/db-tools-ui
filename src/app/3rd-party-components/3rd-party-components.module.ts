@@ -23,7 +23,6 @@ import { TreeModule } from 'primeng/tree';
 
 
 
-
 @NgModule({
   declarations: [],
   imports: [],
@@ -50,7 +49,8 @@ import { TreeModule } from 'primeng/tree';
     ToastModule,
     TreeModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: []
 })
 export class ThirdPartyComponentsModule {}

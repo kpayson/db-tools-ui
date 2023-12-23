@@ -56,6 +56,13 @@ export class DataService {
     }));
   }
 
+  private postApplication(url: string, body: any, connectionId?:number) {
+    return this.headers$.pipe(mergeMap(headers=>{
+      if(connectionId) {url += `?connectionId=${connectionId}`;}
+      return this.http.post(`${environment.apiRootUrl}/${url}`, body, {headers, responseType: 'blob' })
+    }));
+  }
+
   private put<T>(url: string, body: any, connectionId?:number) {
     return this.headers$.pipe(mergeMap(headers=>{
       if(connectionId) {url += `?connectionId=${connectionId}`;}
@@ -107,6 +114,11 @@ export class DataService {
 
   public runDataReport(dataReportId:number, params:{reportParams:{[paramName:string]:any}, viewParams:{[paramName:string]:any}}, connectionId:number) {
     const res$ = this.postTextHtml(`dbTools/RunDataReport`,{dataReportId,params}, connectionId);
+    return res$;
+  }
+
+  public runDataReportPdf(dataReportId:number, params:{reportParams:{[paramName:string]:any}, viewParams:{[paramName:string]:any}}, connectionId:number) {
+    const res$ = this.postApplication(`dbTools/RunDataReportPdf`,{dataReportId,params}, connectionId);
     return res$;
   }
 

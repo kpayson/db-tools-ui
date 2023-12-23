@@ -10,7 +10,16 @@
     <div class="form-group">
       <label for="viewSql" style="width:200px;">View Sql</label>
       <div class="field-container">
-        <textarea id="viewSql" pInputText class="form-control" formControlName="viewSql" rows="8" style="width:100%;"></textarea>
+        <!-- <textarea id="viewSql" pInputText class="form-control" formControlName="viewSql" rows="8" style="width:100%;"></textarea> -->
+        <app-code-editor 
+          id="viewSql"
+          [initialData]="viewSql"
+          [receivedData]="updateViewSql"
+          [errors]="onErrorsChange"
+          [fileMode]="'sql'"
+          [minLines]="10"
+        ></app-code-editor> 
+        <!-- <ace [config]="{minLines:10}" [mode]="'text'" [theme]="'github'" formControlName="viewSql" ></ace>-->
         <br>
         <i>
           (note variable names begin with an @ ex Select * from Client where tenantId = @tenantId)

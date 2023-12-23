@@ -55,10 +55,13 @@ export class DataReportsUpsertDialogComponent {
           dataReportId: [parameter.dataReportId]
         }));
       }
+      this.initialReportTemplate = this.config.data.dataReport.reportTemplate;
 
     }
   }
 
+  editorErrors: any[] = [];
+  initialReportTemplate = '';
 
   get parameters() {
     return this.formGroup.get('parameters') as FormArray;
@@ -66,6 +69,10 @@ export class DataReportsUpsertDialogComponent {
 
   get customViewId() {
     return this.formGroup.get('customViewId')?.value || null
+  }
+
+  get reportTemplate() {
+    return this.formGroup.get('reportTemplate')?.value || "";
   }
 
   addParameter() {
@@ -80,6 +87,17 @@ export class DataReportsUpsertDialogComponent {
   removeParameter(index: number) {
     this.parameters.removeAt(index);
   }
+
+  updateTemplate = (template:string) => {
+    this.formGroup.patchValue({
+      reportTemplate: template
+    });
+  };
+
+  onErrorsChange = (errors: any[]) => {
+    this.editorErrors = errors;
+  };
+
 
   save() {
     if(this.formGroup.invalid){
