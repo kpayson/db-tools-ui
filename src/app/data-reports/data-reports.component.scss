@@ -1,0 +1,30 @@
+@import 'primeflex/primeflex.scss';
+
+  .form-group {
+    display: flex;
+    // justify-content: flex-end;
+    // padding: .5em;
+  }
+  
+  .form-group>label {
+    padding: .5em 1em .5em 0;
+    width:140px;
+    // flex: 1;
+  }
+  
+  .form-group>input,
+  .form-group>p-calendar {
+    // flex: 2;
+  }
+  
+  .form-group>input,
+  .form-group>p-dropdown,
+  .form-group>button {
+    padding: .5em;
+  }
+  
+  .form-group>button {
+    background: gray;
+    color: white;
+    border: 0;
+  }

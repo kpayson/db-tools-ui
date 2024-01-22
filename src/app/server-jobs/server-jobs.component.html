@@ -4,7 +4,7 @@
     <div class="form-group" >
       <label for="selectedTemplate">Job Template</label>
 
-      <p-dropdown id="selectedTemplate" formControlName="selectedTemplate" (onChange)="selectedTemplateChange($event)"
+      <p-dropdown id="selectedTemplate" placeholder="Select a Job Template" formControlName="selectedTemplate" (onChange)="selectedTemplateChange($event)"
           [options]="(commandTemplates$ | async) || []" 
           optionLabel="name" >
           <ng-template let-command pTemplate="item">

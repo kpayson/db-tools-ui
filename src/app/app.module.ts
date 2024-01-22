@@ -35,6 +35,7 @@ import { DataReportsUpsertDialogComponent } from './data-reports-upsert-dialog/d
 import { DataReportResultDialogComponent } from './data-report-result-dialog/data-report-result-dialog.component';
 import { SendReportEmailDialogComponent } from './send-report-email-dialog/send-report-email-dialog.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
+import { DataReportEmailDialogComponent } from './data-report-email-dialog/data-report-email-dialog.component';
 
 
 
@@ -65,6 +66,7 @@ import { CodeEditorComponent } from './code-editor/code-editor.component';
     DataReportResultDialogComponent,
     SendReportEmailDialogComponent,
     CodeEditorComponent,
+    DataReportEmailDialogComponent,
 
   ],
   imports: [

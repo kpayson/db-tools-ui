@@ -1,22 +1,24 @@
 <form [formGroup]="form">
 
-    <div class="form-group">
-        <label for="selectedReport">Data Reports</label>
+    <div class="flex gap-4 pt-3">
+        <div class="flex gap-1 align-items-center">
+            <label for="selectedReport">Data Reports</label>
+            <p-dropdown id="selectedReport" placeholder="Select a Report" formControlName="selectedReport" (onChange)="selectedReportChange($event)"
+                [options]="(state.entities$| async) || []" optionLabel="name" dataKey="id">
+                <ng-template let-view pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ view.name }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="flex gap-1">
+            <p-button [disabled]="!hasSelectedReport" (click)="editSelectedClick()" label="Edit Report" styleClass="p-button-text"></p-button>
+            <p-button (click)="addNewClick()" label="Add Report" styleClass="p-button-text"></p-button>
 
-        <p-dropdown id="selectedReport" formControlName="selectedReport" (onChange)="selectedReportChange($event)"
-            [options]="(state.entities$| async) || []" optionLabel="name" dataKey="id">
-            <ng-template let-view pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                    <div>{{ view.name }}</div>
-                </div>
-            </ng-template>
-        </p-dropdown>
-        <p-button [disabled]="!hasSelectedReport" (click)="editSelectedClick()" label="Edit Report" styleClass="p-button-text"></p-button>
-        <p-button (click)="addNewClick()" label="Add Report" styleClass="p-button-text"></p-button>
-
-        <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-        <p-button [disabled]="!hasSelectedReport" (click)="confirmDelete($event)" label="Delete Report" styleClass="p-button-text"></p-button>
-
+            <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+            <p-button [disabled]="!hasSelectedReport" (click)="confirmDelete($event)" label="Delete Report" styleClass="p-button-text"></p-button>
+        </div>
     </div>
 
     <br><br>
@@ -25,20 +27,32 @@
         <label [for]="'reportParam'+i">{{param.name}}</label>
         <input [id]="'reportParam'+i" [formControlName]="param.name" pInputText class="input-control" />
     </div>
+    <div *ngIf="((selectedReportParams$ | async) || []).length == 0">
+        <i>No report parameters</i>
+    </div>
 
     <br>
 
-    <h2>View Parameters</h2>
+    <h2>Data View Parameters</h2>
     <div>
-        <div class="form-group" *ngFor="let param of (customViewParams$ | async); let i=index">
+        <!-- <div class="form-group" *ngFor="let param of (customViewParams$ | async); let i=index">
             <label [for]="'viewParam'+i">{{param.name}}</label>
             <input [id]="'viewParam'+i" [formControlName]="param.name" pInputText class="input-control" />
+        </div> -->
+        <div class="form-group" *ngFor="let param of (customViewParams$ | async); let i=index">
+            <label [for]="'viewParam'+i">{{param.name}}</label>
+            <input *ngIf="param.dataType == 'string'" [id]="'viewParam'+i" [formControlName]="param.name" pInputText class="input-control" />
+            <input *ngIf="param.dataType == 'number'" [id]="'viewParam'+i" [formControlName]="param.name" pInputText class="input-control" type="number"  />
+            <p-calendar *ngIf="param.dataType == 'date'" [formControlName]="param.name"></p-calendar>
+        </div>
+        <div *ngIf="((customViewParams$ | async) || []).length == 0">
+            <i>No data view parameters</i>
         </div>
     </div>
 
     <br>
     <div class="action-buttons">
-        <p-button (click)="runClick()">Run</p-button>
+        <p-button [disabled]="!hasSelectedReport" (click)="runClick()">Run</p-button>
     </div>
 
 </form>

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { CustomViewsUpsertDialogComponent } from '../custom-views-upsert-dialog/custom-views-upsert-dialog.component';
 import { CustomViewsStateService } from '../custom-views-state.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CustomView, CustomViewParameter } from '../models';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DbToolsService } from '../db-tools.service';
 import { saveAs } from 'file-saver';
 
@@ -16,7 +16,7 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./custom-views.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class CustomViewsComponent implements OnInit {
+export class CustomViewsComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
   ref: DynamicDialogRef | undefined;
@@ -31,6 +31,8 @@ export class CustomViewsComponent implements OnInit {
   }
 
   selectedViewParams$ = new BehaviorSubject<CustomViewParameter[]>([]);
+
+  lastAddedEntitySubscription: Subscription | undefined;
 
   viewRan = false;
   viewData: any[] = [];
@@ -51,6 +53,10 @@ export class CustomViewsComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.lastAddedEntitySubscription?.unsubscribe();
+  }
+
   get selectedViewId() {
     return this.form.get('selectedView')?.value?.id || null
   }
@@ -59,34 +65,51 @@ export class CustomViewsComponent implements OnInit {
     return this.form.get('selectedView')?.value ? true : false;
   }
 
-  selectedViewChange(evnt: { value: any }) {
-    this.state.setSelected(evnt.value);
-    this.viewRan = false;
+  private resetForm(selectedView: CustomView) {
+    this.form.patchValue({selectedView: selectedView});
 
-    const currentParamNames = this.selectedViewParams$.value.map(param => param.name);
-    for (const name of currentParamNames) {
+    const currentViewParamNames = this.selectedViewParams$.value.map(param => param.name);
+    for (const name of currentViewParamNames) {
       this.form.removeControl(name);
     }
 
-    const newParams = evnt.value?.parameters || [];
-    for (const param of newParams) {
-      //const validator = param.required ? Validators.required : Validators.nullValidator;
+    const newViewParams = selectedView.parameters || [];
+    for (const param of newViewParams) {
       this.form.addControl(param.name, new FormControl(param.defaultValue))
     }
+    this.selectedViewParams$.next(newViewParams)
 
-    this.selectedViewParams$.next(newParams)
+  }
 
+  private clearForm() {
+    this.form.patchValue({selectedView: null});
+
+    const currentViewParamNames = this.selectedViewParams$.value.map(param => param.name);
+    for (const name of currentViewParamNames) {
+      this.form.removeControl(name);
+    }
+    this.selectedViewParams$.next([]);
+  }
+
+  selectedViewChange(evnt: { value: any }) {
+    this.resetForm(evnt.value);
   }
 
   editSelectedClick() {
     this.ref = this.dialogService.open(CustomViewsUpsertDialogComponent, {
-      data: { mode: 'edit', customView: this.state.selectedEntity },
+      data: { mode: 'edit', customView: this.form.get('selectedView')?.value  },
       header: 'Edit Custom View',
       width: '95%',
       height: '95%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true
+    });
+
+    this.ref.onClose.subscribe((customView: CustomView) => {
+      if (customView) {
+        this.resetForm(customView);
+      }
     });
   }
 
@@ -100,11 +123,20 @@ export class CustomViewsComponent implements OnInit {
       baseZIndex: 10000,
       maximizable: true
     });
+
+    this.ref.onClose.subscribe((customView: CustomView) => {
+      this.lastAddedEntitySubscription = this.state.lastAddedEntity$.subscribe((customView) => {
+        if (customView) {
+          this.resetForm(customView);
+        }
+      });
+    });
   }
 
   confirmDelete($event: any) {
     if (this.selectedViewId) {
       this.state.delete(this.selectedViewId);
+      this.clearForm();
     }
   }
 

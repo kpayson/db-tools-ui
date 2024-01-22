@@ -1,80 +1,122 @@
 <div class="wrapper" [formGroup]="formGroup">
-    <div class="form-group">
-      <label for="name" style="width:200px;">Name</label>
-      <input id="name" type="text" pInputText class="form-control" formControlName="name" >
+  <div class="form-group">
+    <label for="name" style="width:200px;">Name</label>
+    <input id="name" type="text" pInputText class="form-control" formControlName="name">
+  </div>
+  <div class="form-group">
+    <label for="description" style="width:200px;">Description</label>
+    <input id="description" type="text" pInputText class="form-control" formControlName="description">
+  </div>
+  <div class="form-group">
+    <label for="customView">Data View</label>
+    <p-dropdown id="customView" formControlName="customViewId"
+      [options]="(this.customViewsService.entities$ | async) || [] " optionLabel="name" optionValue="id" dataKey="id">
+    </p-dropdown>
+  </div>
+  <div class="form-group">
+    <label for="reportTemplate" style="width:200px;">Report Template <i class="pi pi-info-circle" (click)="templateInfoClick()"></i></label>
+    <div class="field-container">
+      <app-code-editor 
+        id="reportTemplate" 
+        [initialData]="config.data?.dataReport?.reportTemplate || ''"
+        [receivedData]="updateTemplate" 
+        [errors]="onErrorsChange" 
+        [fileMode]="'html'" 
+        [minLines]="10">
+      </app-code-editor>
     </div>
-    <div class="form-group">
-      <label for="description" style="width:200px;">Description</label>
-      <input id="description" type="text" pInputText class="form-control" formControlName="description" >
-    </div>
-    <div class="form-group">
-        <label for="customView">Data View</label>
-        <p-dropdown formControlName="customViewId" 
-            [options]="(this.customViewsService.entities$ | async) || [] "
-            optionLabel="name"
-            optionValue="id" 
-            dataKey="id"
-        >
 
-        </p-dropdown>
-    </div>
-    <div class="form-group">
-      <label for="reportTemplate" style="width:200px;">Report Template</label>
-      <div class="field-container">
-        <app-code-editor 
-          id="reportTemplate"
-          [initialData]="config.data?.dataReport?.reportTemplate || ''"
-          [receivedData]="updateTemplate"
-          [errors]="onErrorsChange"
-          [fileMode]="'html'"
-          [minLines]="10"
-          ></app-code-editor>
-      </div>
-
-    </div>
-    <div class="form-group" formArrayName="parameters">
-      <label>Parameters</label>
-      <div class="field-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Data Type</th>
-              <th>Default Value</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let parameterForm of parameters.controls; let i=index" [formGroupName]="i">
-              <td>
-                <input type="text" id="parameterName" pInputText class="form-control" formControlName="name"
-                  style="width:200px" />
-              </td>
-              <!-- <td>
+  </div>
+  <div class="form-group" formArrayName="parameters">
+    <label>Report Level Parameters</label>
+    <div class="field-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Data Type</th>
+            <th>Default Value</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let parameterForm of parameters.controls; let i=index" [formGroupName]="i">
+            <td>
+              <input type="text" id="parameterName" pInputText class="form-control" formControlName="name"
+                style="width:200px" />
+            </td>
+            <td>
                 <p-dropdown formControlName="dataType"
-                  [options]="[{value:'string', name:'string'}, {value:'number', name:'number'}]" 
+                  [options]="[{value:'string', name:'string'}, {value:'number', name:'number'}, {value:'date', name:'date'}]" 
                   optionValue="value"
                   optionLabel="name">
                 </p-dropdown>
-              </td> -->
-              <td>
-                <input type="text" id="parameterDefaultValue" pInputText class="form-control"
-                  formControlName="defaultValue" style="width:200px">
               </td>
-              <td>
-                <i class="pi pi-times" (click)="removeParameter(i)" style="color:red; cursor: pointer;"></i>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <button type="button" class="btn btn-primary" (click)="addParameter()">Add Parameter</button>
-      </div>
+            <td>
+              <input type="text" id="parameterDefaultValue" pInputText class="form-control"
+                formControlName="defaultValue" style="width:200px">
+            </td>
+            <td>
+              <i class="pi pi-times" (click)="removeParameter(i)" style="color:red; cursor: pointer;"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-primary" (click)="addParameter()">Add Parameter</button>
     </div>
-  
-  
   </div>
+
+
+</div>
+
+<div style="margin-top:8px;">
+  <p-button (click)="save()">Save</p-button> &nbsp;
+  <p-button severity="secondary" (click)="cancel()">Cancel</p-button>
+</div>
+
+
+<p-dialog header="Report Templates" [(visible)]="showTemplateInfo" [style]="{width: '50vw'}">
+  <p>
+    The report template is a handlebars template. 
+    For technical details on the template syntax see <a href="https://handlebarsjs.com/" target="_blank">https://handlebarsjs.com</a>
+  </p>
+  <p>
+    Three types of variables are available to the template: 
+  </p>
+  <ol>
+    <li>Report Parameters exist at the level of the report.  Report parameters are prefixed with 'report' ex <code>report.name</code></li>
+    <li>Data View Parameters are the same parameters as are in the custom view used by the report. Data view parameters are prefixed with 'view' ex <code>view.startDate</code></li>
+    <li>Report Data Parameters are the column names for the data returned from the view.  The loop collection variable is called 'rows'</li>
+  </ol>
+
+  <p>
+    The template also supports some formatting helpers
+  </p>
+  <dl>
+    <dt>localDateString: Formats a date as a local date string</dt>
+  </dl>
+
+  <p>
+    Any Report level parameters used in the report template must be defined in the Report Level Parameters section (without the 'report' prefix).
+  </p>
+
+  <p>
+    Template Example:
+  </p>
+  <pre>
+    <code>
+      start date: {{ "{{localDateString view.startDate}}" }} &lt;br&gt;
   
-  <div style="margin-top:8px;">
-    <p-button (click)="save()">Save</p-button> &nbsp;
-    <p-button severity="secondary" (click)="cancel()">Cancel</p-button>
-  </div>
+      {{ "{{#each rows}}" }}
+        &lt;div&gt;User: {{"{{firstname}}"}} {{"{{lastname}}"}} &lt;/div&gt;
+      {{ "{{/each}}" }}
+
+      &lt;br&gt;
+    
+      {{ "{{report.note}}" }}
+    </code>
+  </pre>
+
+  
+</p-dialog>
+

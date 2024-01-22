@@ -35,7 +35,7 @@ export class CustomViewsUpsertDialogComponent {
     if(this.config.data.mode === 'edit'){
       this.formGroup.patchValue(this.config.data.customView);
       const formArray = this.formGroup.controls['parameters'] as FormArray;
-      for(const parameter of this.config.data.customView.parameters || []){
+      for(const parameter of this.config.data.customView?.parameters || []){
         formArray.push(this.fb.group({
           name: [parameter.name, Validators.required],
           dataType: [parameter.dataType, Validators.required],
@@ -49,6 +49,7 @@ export class CustomViewsUpsertDialogComponent {
   }
 
   editorErrors: any[] = [];
+  showTemplateInfo = false;
   
   get parameters() {
     return this.formGroup.get('parameters') as FormArray;
@@ -103,11 +104,15 @@ export class CustomViewsUpsertDialogComponent {
       this.state.add(customView);
     }
 
-    this.ref.close();
+    this.ref.close(customView);
+
   }
 
   cancel() {
     this.ref.close();
   }
 
+  templateInfoClick() {
+    this.showTemplateInfo = true;
+  }
 }

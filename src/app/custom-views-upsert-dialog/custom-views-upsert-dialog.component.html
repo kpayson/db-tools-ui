@@ -8,12 +8,14 @@
       <input id="description" type="text" pInputText class="form-control" formControlName="description" >
     </div>
     <div class="form-group">
-      <label for="viewSql" style="width:200px;">View Sql</label>
+      <label for="viewSql" style="width:200px;">View Sql
+      <i class="pi pi-info-circle" (click)="templateInfoClick()"></i>
+    </label>
       <div class="field-container">
         <!-- <textarea id="viewSql" pInputText class="form-control" formControlName="viewSql" rows="8" style="width:100%;"></textarea> -->
         <app-code-editor 
           id="viewSql"
-          [initialData]="viewSql"
+          [initialData]="config.data?.customView?.viewSql || ''"
           [receivedData]="updateViewSql"
           [errors]="onErrorsChange"
           [fileMode]="'sql'"
@@ -47,7 +49,7 @@
               </td>
               <td>
                 <p-dropdown formControlName="dataType"
-                  [options]="[{value:'string', name:'string'}, {value:'number', name:'number'}]" 
+                  [options]="[{value:'string', name:'string'}, {value:'number', name:'number'}, {value:'date', name:'date'}]" 
                   optionValue="value"
                   optionLabel="name">
                 </p-dropdown>
@@ -73,3 +75,23 @@
     <p-button (click)="save()">Save</p-button> &nbsp;
     <p-button severity="secondary" (click)="cancel()">Cancel</p-button>
   </div>
+
+
+  <p-dialog header="Custom View Query" [(visible)]="showTemplateInfo" [style]="{width: '50vw'}">
+    <p>
+      Create a parameterized query. Query parameters in the sql are prefixed with an @ symbol. <br><br>
+      Create the same parameters in the parameters section without the @ symbol prefix.
+    </p>
+    <p>
+      Example
+    </p>
+
+    <pre>
+      <code>
+          Select * from Client
+          Where tenantId = @tenantId;
+      </code>
+    </pre>
+  
+    
+  </p-dialog>

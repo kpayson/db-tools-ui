@@ -4,6 +4,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -33,6 +34,7 @@ import { TreeModule } from 'primeng/tree';
     CheckboxModule,
     ConfirmDialogModule,
     ConfirmPopupModule,
+    DialogModule,
     DropdownModule,
     DynamicDialogModule,
     FileUploadModule,

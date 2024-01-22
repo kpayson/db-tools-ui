@@ -3,7 +3,8 @@
     <form class="flex align-items-center gap-1" [formGroup]="formGroup">
 
         <div style="display:flex; gap:8px; align-items:center">
-            <p-dropdown formControlName="selectedTable" 
+            <p-dropdown formControlName="selectedTable"
+                placeholder="Select a Table" 
                 [options]="(tables$ | async) || []" 
                 optionLabel="tableName" 
                 optionValue="tableName" 

@@ -1,0 +1,20 @@
+@import 'primeflex/primeflex.scss';
+
+.email-form {
+    // width:500px;
+    .field-group {
+        margin-bottom:20px;
+    }
+    .alert {
+        color: red;
+    }
+    label {
+        //@include styleclass('block font-medium')
+        display:block;
+        font-weight:500;
+    }
+    input, textarea {
+        width:100%;
+    }
+}
+

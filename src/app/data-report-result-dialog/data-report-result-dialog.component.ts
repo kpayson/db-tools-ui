@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import {DataReportEmailDialogComponent} from '../data-report-email-dialog/data-report-email-dialog.component'
 import jsPDF from 'jspdf';
 
 @Component({
@@ -14,12 +15,13 @@ export class DataReportResultDialogComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig) {
+    public config: DynamicDialogConfig,
+    public dialogService: DialogService) {
 
   }
   ngOnInit(): void {
     if(this.config.data) {
-      this.safeHtml = this.config.data;
+      this.safeHtml = this.config.data.html;
     }
   }
 
@@ -56,7 +58,15 @@ export class DataReportResultDialogComponent implements OnInit {
   }
 
   sendEmail() {
-    
+    this.ref = this.dialogService.open(DataReportEmailDialogComponent, {
+      data: { reportName:this.config.data.name, runDate:new Date() },
+      header: 'Send Report Email',
+      width: '30%',
+      height: '60%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true
+    });
   }
 }
 

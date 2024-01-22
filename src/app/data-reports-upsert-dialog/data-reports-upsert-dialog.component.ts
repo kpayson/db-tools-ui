@@ -46,7 +46,7 @@ export class DataReportsUpsertDialogComponent {
     if(this.config.data.mode === 'edit'){
       this.formGroup.patchValue(this.config.data.dataReport);
       const formArray = this.formGroup.controls['parameters'] as FormArray;
-      for(const parameter of this.config.data.dataReport.parameters || []){
+      for(const parameter of this.config.data.dataReport?.parameters || []){
         formArray.push(this.fb.group({
           name: [parameter.name, Validators.required],
           //dataType: [parameter.dataType, Validators.required],
@@ -62,6 +62,7 @@ export class DataReportsUpsertDialogComponent {
 
   editorErrors: any[] = [];
   initialReportTemplate = '';
+  showTemplateInfo = false;
 
   get parameters() {
     return this.formGroup.get('parameters') as FormArray;
@@ -98,6 +99,11 @@ export class DataReportsUpsertDialogComponent {
     this.editorErrors = errors;
   };
 
+  templateInfoClick() {
+    this.showTemplateInfo = true;
+    // TODO
+  }
+
 
   save() {
     if(this.formGroup.invalid){
@@ -120,7 +126,7 @@ export class DataReportsUpsertDialogComponent {
       this.state.add(dataReport);
     }
 
-    this.ref.close();
+    this.ref.close(dataReport);
   }
 
   cancel() {

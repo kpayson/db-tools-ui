@@ -1,0 +1,43 @@
+<div class="email-form" [formGroup]="emailForm">
+
+    <div class="field-group">
+      <label for="to-address">To:</label>
+      <input pInputText type="email" id="to-address" name="to-address" formControlName="toAddress" placeholder="john.doe@email.com"  >
+      <div class="alert" *ngIf="toAddress?.invalid && (toAddress?.dirty || toAddress?.touched)">
+        <div *ngIf="toAddress?.errors?.required">
+          To address is required.
+        </div>
+        <div *ngIf="toAddress?.errors?.email">
+          This is not a valid email address.
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label for="subject-line">Subject:</label>
+      <input pInputText type="text" id="subject-line" name="subject-line" formControlName="subjectLine">
+      <div class="alert" *ngIf="subjectLine?.invalid && (subjectLine?.dirty || subjectLine?.touched)">
+        <div *ngIf="subjectLine?.errors?.required">
+          Subject line is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <span class="font-medium inline-block pr-3">Attachments:</span>
+      <a class="cursor-pointer font-italic" (click)="downloadReport()"> {{attachmentFileName}}</a>
+    </div>
+
+    <div class="field-group">
+      <label for="message-body">Message:</label>
+      <textarea pInputTextarea id="message-body" formControlName="messageBody" rows="8"></textarea>
+      <div class="alert" *ngIf="messageBody?.invalid && (messageBody?.dirty || messageBody?.touched)">
+        <div *ngIf="messageBody?.errors?.required">
+          Message body is required.
+        </div>
+      </div>
+    </div>
+
+    <button pButton label="Send" class="p-button-sm" [disabled]="emailForm.invalid" (click)="sendEmail()"></button>
+
+</div>

@@ -1,33 +1,42 @@
 <form [formGroup]="form">
 
-    <div class="form-group">
-        <label for="selectedView">Custom Views</label>
+    <div class="flex gap-4 pt-3">
+        <div class="flex gap-1 align-items-center">
+            <label for="selectedView">Custom Views</label>
 
-        <p-dropdown id="selectedView" formControlName="selectedView" (onChange)="selectedViewChange($event)"
-            [options]="(state.entities$| async) || []" optionLabel="name" dataKey="id">
-            <ng-template let-view pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                    <div>{{ view.name }}</div>
-                </div>
-            </ng-template>
-        </p-dropdown>
-        <p-button [disabled]="!hasSelectedView" (click)="editSelectedClick()" label="Edit View" styleClass="p-button-text"></p-button>
-        <p-button (click)="addNewClick()" label="Add View" styleClass="p-button-text"></p-button>
+            <p-dropdown id="selectedView" formControlName="selectedView" placeholder="Select a View" (onChange)="selectedViewChange($event)"
+                [options]="(state.entities$| async) || []" optionLabel="name" dataKey="id">
+                <ng-template let-view pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ view.name }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
 
-        <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-        <p-button [disabled]="!hasSelectedView" (click)="confirmDelete($event)" label="Delete View" styleClass="p-button-text"></p-button>
+        <div class="flex gap-1">
+            <p-button [disabled]="!hasSelectedView" (click)="editSelectedClick()" label="Edit View" styleClass="p-button-text"></p-button>
+            <p-button (click)="addNewClick()" label="Add View" styleClass="p-button-text"></p-button>
+
+            <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+            <p-button [disabled]="!hasSelectedView" (click)="confirmDelete($event)" label="Delete View" styleClass="p-button-text"></p-button>
+        </div>
 
     </div>
 
     <br><br>
-    <div class="form-group" *ngFor="let param of (selectedViewParams$ | async); let i=index">
+    <div class="form-group mb-1" *ngFor="let param of (selectedViewParams$ | async); let i=index">
         <label [for]="'viewParam'+i">{{param.name}}</label>
-        <input [id]="'viewParam'+i" [formControlName]="param.name" pInputText class="input-control" />
+        
+        <input *ngIf="param.dataType == 'string'" [id]="'viewParam'+i" [formControlName]="param.name" pInputText class="input-control" />
+        <input *ngIf="param.dataType == 'number'" [id]="'viewParam'+i" [formControlName]="param.name" pInputText class="input-control" type="number"  />
+        <p-calendar *ngIf="param.dataType == 'date'" [formControlName]="param.name"></p-calendar>
     </div>
+
 
     <br>
     <div class="action-buttons">
-        <p-button (click)="runClick()">Run</p-button>
+        <p-button [disabled]="!hasSelectedView" (click)="runClick()">Run</p-button>
     </div>
 
     <br><br>

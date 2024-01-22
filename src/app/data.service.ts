@@ -113,7 +113,7 @@ export class DataService {
   }
 
   public runDataReport(dataReportId:number, params:{reportParams:{[paramName:string]:any}, viewParams:{[paramName:string]:any}}, connectionId:number) {
-    const res$ = this.postTextHtml(`dbTools/RunDataReport`,{dataReportId,params}, connectionId);
+    const res$ = this.post<{key:string, report:string}>(`dbTools/RunDataReport`,{dataReportId,params}, connectionId);
     return res$;
   }
 
